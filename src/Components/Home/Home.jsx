@@ -22,8 +22,30 @@ const App = () => {
   const [isAnimating, setIsAnimating] = useState(false); // Animation state
   const [modal, setModal] = useState(null);
 
-  const itemsPerPage = 4;
+  // Responsive items per page based on screen size
+  const getItemsPerPage = () => {
+    if (typeof window !== 'undefined') {
+      if (window.innerWidth < 640) return 1; // mobile
+      if (window.innerWidth < 1024) return 2; // tablet
+      return 4; // desktop
+    }
+    return 4;
+  };
+
+  const [itemsPerPage, setItemsPerPage] = useState(getItemsPerPage());
   const itemsPreview = 1;
+
+  // Update items per page on window resize
+  useState(() => {
+    const handleResize = () => {
+      setItemsPerPage(getItemsPerPage());
+    };
+
+    if (typeof window !== 'undefined') {
+      window.addEventListener('resize', handleResize);
+      return () => window.removeEventListener('resize', handleResize);
+    }
+  }, []);
 
   // Handlers for navigation with delay and animation
   const handleInternshipPrev = () => {
@@ -45,7 +67,7 @@ const App = () => {
         setInternshipIndex((prevIndex) =>
           Math.min(
             prevIndex + itemsPreview,
-            internshipsData.length - itemsPreview
+            internshipsData.length - itemsPerPage
           )
         );
         setIsAnimating(false);
@@ -69,7 +91,7 @@ const App = () => {
       setIsAnimating(true);
       setTimeout(() => {
         setJobIndex((prevIndex) =>
-          Math.min(prevIndex + itemsPreview, jobsData.length - itemsPreview)
+          Math.min(prevIndex + itemsPreview, jobsData.length - itemsPerPage)
         );
         setIsAnimating(false);
       }, 300);
@@ -92,7 +114,7 @@ const App = () => {
       setIsAnimating(true);
       setTimeout(() => {
         setCourseIndex((prevIndex) =>
-          Math.min(prevIndex + itemsPreview, coursesData.length - itemsPreview)
+          Math.min(prevIndex + itemsPreview, coursesData.length - itemsPerPage)
         );
         setIsAnimating(false);
       }, 300);
@@ -111,83 +133,85 @@ const App = () => {
   );
 
   return (
-    <div className="flex flex-col items-center p-5">
+    <div className="flex flex-col items-center p-3 sm:p-5">
       {/* Header Section */}
-      <div className="text-center mb-10">
-        <h1 className="text-4xl font-bold mb-4">InternsWallah</h1>
-        <h2 className="text-2xl font-semibold mt-2 text-blue-600">
+      <div className="text-center mb-6 sm:mb-10 px-4">
+        <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-2 sm:mb-4">InternsWallah</h1>
+        <h2 className="text-lg sm:text-xl lg:text-2xl font-semibold mt-2 text-blue-600">
           Where Opportunity Finds Talent
         </h2>
-        <p className="mt-4 text-lg text-gray-700">
+        <p className="mt-2 sm:mt-4 text-sm sm:text-base lg:text-lg text-gray-700 max-w-2xl mx-auto">
           Explore opportunities from across the globe to grow, showcase skills,
-          gain CV points,
-        </p>
-        <p className="text-lg text-gray-700">
-          and get hired by your dream company.
+          gain CV points, and get hired by your dream company.
         </p>
       </div>
 
       {/* Cards Section */}
-      <div className="grid grid-cols-3 gap-5 mb-10">
-        {/* Row 1 - 3 Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 mb-6 sm:mb-10 w-full max-w-6xl px-4">
+        {/* Internships Card */}
         <Link
         to="/internships"
-        className="p-5 flex flex-col items-center justify-center gap-3 transform transition-transform duration-300 hover:-translate-y-2 hover:shadow-2xl h-48 w-80 rounded-xl overflow-hidden">
+        className="relative p-5 flex flex-col items-center justify-center gap-3 transform transition-transform duration-300 hover:-translate-y-2 hover:shadow-2xl h-40 sm:h-48 rounded-xl overflow-hidden">
           <img
             src={internshipImage}
             alt="Internships"
             className="absolute inset-0 w-full h-full object-cover"
           />
-          <div
-           className="absolute inset-0 bg-black/30 flex flex-col items-center justify-center text-white">
-            <h3 className="text-lg font-bold">Internships</h3>
-            <p className="text-lg font-bold">Gain Practical Experience</p>
+          <div className="absolute inset-0 bg-black/30 flex flex-col items-center justify-center text-white">
+            <h3 className="text-base sm:text-lg font-bold">Internships</h3>
+            <p className="text-sm sm:text-lg font-bold text-center px-2">Gain Practical Experience</p>
           </div>
         </Link>
+
+        {/* Mentorship Card */}
         <Link
         to="/mentor"
-        className="p-5 flex flex-col items-center justify-center gap-3 transform transition-transform duration-300 hover:-translate-y-2 hover:shadow-2xl h-48 w-80 rounded-xl overflow-hidden">
+        className="relative p-5 flex flex-col items-center justify-center gap-3 transform transition-transform duration-300 hover:-translate-y-2 hover:shadow-2xl h-40 sm:h-48 rounded-xl overflow-hidden">
           <img
             src={MentorImage}
             alt="Mentorship"
             className="absolute inset-0 w-full h-full object-cover"
           />
-
           <div className="absolute inset-0 bg-black/30 flex flex-col items-center justify-center text-white">
-            <h3 className="text-lg font-bold">Mentorships</h3>
-            <p className="text-lg font-bold">Guidance From Top Mentors</p>
+            <h3 className="text-base sm:text-lg font-bold">Mentorships</h3>
+            <p className="text-sm sm:text-lg font-bold text-center px-2">Guidance From Top Mentors</p>
           </div>
         </Link>
+
+        {/* Jobs Card */}
         <Link
         to="/jobs"
-        className="p-5 flex flex-col items-center justify-center gap-3 transform transition-transform duration-300 hover:-translate-y-2 hover:shadow-2xl h-48 w-80 rounded-xl overflow-hidden">
+        className="relative p-5 flex flex-col items-center justify-center gap-3 transform transition-transform duration-300 hover:-translate-y-2 hover:shadow-2xl h-40 sm:h-48 rounded-xl overflow-hidden">
           <img
             src="https://eduauraapublic.s3.ap-south-1.amazonaws.com/webassets/images/blogs/highest-paying-jobs-in-india.jpg"
             alt="Jobs"
             className="absolute inset-0 w-full h-full object-cover"
           />
           <div className="absolute inset-0 bg-black/30 flex flex-col items-center justify-center text-white">
-            <h3 className="text-lg font-bold">Jobs</h3>
-            <p className="text-lg font-bold">Explore Diverse Careers</p>
+            <h3 className="text-base sm:text-lg font-bold">Jobs</h3>
+            <p className="text-sm sm:text-lg font-bold text-center px-2">Explore Diverse Careers</p>
           </div>
         </Link>
+
+        {/* Courses Card */}
         <Link
         to="/courses"
-        className="p-5 flex flex-col items-center justify-center gap-3 transform transition-transform duration-300 hover:-translate-y-2 hover:shadow-2xl h-48 w-80 rounded-xl overflow-hidden">
+        className="relative p-5 flex flex-col items-center justify-center gap-3 transform transition-transform duration-300 hover:-translate-y-2 hover:shadow-2xl h-40 sm:h-48 rounded-xl overflow-hidden">
           <img
             src={CourseImage}
             alt="Courses"
             className="absolute inset-0 w-full h-full object-cover"
           />
           <div className="absolute inset-0 bg-black/30 flex flex-col items-center justify-center text-white">
-            <h3 className="text-lg font-bold">Courses</h3>
-            <p className="text-lg font-bold">Explore Fresh Courses</p>
+            <h3 className="text-base sm:text-lg font-bold">Courses</h3>
+            <p className="text-sm sm:text-lg font-bold text-center px-2">Explore Fresh Courses</p>
           </div>
         </Link>
 
+        {/* Study Abroad Card */}
         <Link
           to="/abroad"
-          className="p-5 flex flex-col items-center justify-center gap-3 transform transition-transform duration-300 hover:-translate-y-2 hover:shadow-2xl h-48 w-80 rounded-xl overflow-hidden"
+          className="relative p-5 flex flex-col items-center justify-center gap-3 transform transition-transform duration-300 hover:-translate-y-2 hover:shadow-2xl h-40 sm:h-48 rounded-xl overflow-hidden"
         >
           <img
             src={AbroadImage}
@@ -195,29 +219,31 @@ const App = () => {
             className="absolute inset-0 w-full h-full object-cover"
           />
           <div className="absolute inset-0 bg-black/30 flex flex-col items-center justify-center text-white">
-            <h3 className="text-lg font-bold">Study Abroad</h3>
-            <p className="text-lg font-bold">Enhance Your Skills</p>
+            <h3 className="text-base sm:text-lg font-bold">Study Abroad</h3>
+            <p className="text-sm sm:text-lg font-bold text-center px-2">Enhance Your Skills</p>
           </div>  
         </Link>
+
+        {/* Counselling Card */}
         <Link
         to="/book"
-        className="p-5 flex flex-col items-center justify-center gap-3 transform transition-transform duration-300 hover:-translate-y-2 hover:shadow-2xl h-48 w-80 rounded-xl overflow-hidden">
+        className="relative p-5 flex flex-col items-center justify-center gap-3 transform transition-transform duration-300 hover:-translate-y-2 hover:shadow-2xl h-40 sm:h-48 rounded-xl overflow-hidden">
           <img
             src={BookImage}
             alt="More"
             className="absolute inset-0 w-full h-full object-cover"
           />
           <div className="absolute inset-0 bg-black/30 flex flex-col items-center justify-center text-white">
-            <p className="text-lg font-bold">Book a Free </p>
-            <p className="text-lg font-bold">1:1 Counselling Session</p>
+            <p className="text-sm sm:text-lg font-bold text-center px-2">Book a Free</p>
+            <p className="text-sm sm:text-lg font-bold text-center px-2">1:1 Counselling Session</p>
           </div>
         </Link>
       </div>
 
       {/* Latest Internships Section */}
-      <div className="w-full text-center mb-10">
-        <h2 className="text-3xl font-bold mb-5">Fresh Internships</h2>
-        <div className="grid grid-cols-4 gap-5">
+      <div className="w-full text-center mb-6 sm:mb-10 px-4">
+        <h2 className="text-2xl sm:text-3xl font-bold mb-5">Fresh Internships</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 max-w-7xl mx-auto">
           {visibleInternships.map((internship) => (
             <div
               key={internship.id}
@@ -225,28 +251,27 @@ const App = () => {
             >
               {/* Top Section with Gradient and Icon */}
               <div
-                className={`relative w-full h-28 ${internship.bgColor} flex items-center justify-center `}
+                className="relative w-full h-24 sm:h-28 flex items-center justify-center"
                 style={{ backgroundImage: `url(${intern_bg})`, backgroundSize: 'cover', backgroundPosition: 'center' }}
               >
-              
                 <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
-                <h3 className="z-10 text-white text-2xl font-bold">
+                <h3 className="z-10 text-white text-lg sm:text-2xl font-bold text-center px-2">
                   {internship.title}
                 </h3>
               </div>
 
               {/* Main Content */}
-              <div className="p-5">
+              <div className="p-3 sm:p-5">
                 {/* Organization Name */}
-                <p className="text-gray-700 text-lg font-medium mb-3">
+                <p className="text-gray-700 text-base sm:text-lg font-medium mb-3">
                   {internship.organization}
                 </p>
 
                 {/* Metadata Section */}
-                <div className="flex flex-col gap-2 text-sm text-gray-600">
+                <div className="flex flex-col gap-2 text-xs sm:text-sm text-gray-600">
                   <div className="flex items-center gap-2">
                     <span className="text-purple-500">📍</span>
-                    <p>{internship.location}</p>
+                    <p className="truncate">{internship.location}</p>
                   </div>
                   <div className="flex items-center gap-2">
                     <span className="text-blue-500">🕒</span>
@@ -259,13 +284,13 @@ const App = () => {
                 </div>
 
                 {/* Bottom Section */}
-                <div className="flex justify-between items-center mt-5">
-                  <div className="text-gray-500 text-sm flex gap-3">
+                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mt-5 gap-3">
+                  <div className="text-gray-500 text-xs sm:text-sm flex flex-col sm:flex-row gap-1 sm:gap-3">
                     <span>👁️ {internship.views} Views</span>
                     <span>⏳ {internship.daysLeft} Days Left</span>
                   </div>
                   <button
-                    className="px-4 py-2 bg-[#0a66c2] badge text-white text-sm font-semibold rounded-full hover:opacity-90 transition"
+                    className="px-3 sm:px-4 py-2 bg-[#0a66c2] badge text-white text-xs sm:text-sm font-semibold rounded-full hover:opacity-90 transition w-full sm:w-auto"
                     onClick={() => setModal(internship)}
                   >
                     View Details
@@ -277,14 +302,14 @@ const App = () => {
         </div>
         <div className="flex justify-center gap-2 mt-5">
           <button
-            className="px-4 py-2 bg-blue-500 text-white rounded-s-full hover:bg-blue-600 disabled:bg-gray-300 disabled:cursor-not-allowed text-xl"
+            className="px-3 sm:px-4 py-2 bg-blue-500 text-white rounded-s-full hover:bg-blue-600 disabled:bg-gray-300 disabled:cursor-not-allowed text-lg sm:text-xl"
             onClick={handleInternshipPrev}
             disabled={internshipIndex === 0}
           >
             &larr;
           </button>
           <button
-            className="px-4 py-2 bg-blue-500 text-white rounded-e-full hover:bg-blue-600 disabled:bg-gray-300 disabled:cursor-not-allowed text-xl"
+            className="px-3 sm:px-4 py-2 bg-blue-500 text-white rounded-e-full hover:bg-blue-600 disabled:bg-gray-300 disabled:cursor-not-allowed text-lg sm:text-xl"
             onClick={handleInternshipNext}
             disabled={internshipIndex + itemsPerPage >= internshipsData.length}
           >
@@ -293,10 +318,11 @@ const App = () => {
         </div>
       </div>
       <Modal internship={modal} onClose={() => setModal(null)} />
+
       {/* Latest Jobs Section */}
-      <div className="w-full text-center mb-10">
-        <h2 className="text-3xl font-bold mb-5">Fresh Jobs</h2>
-        <div className="grid grid-cols-4 gap-5">
+      <div className="w-full text-center mb-6 sm:mb-10 px-4">
+        <h2 className="text-2xl sm:text-3xl font-bold mb-5">Fresh Jobs</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 max-w-7xl mx-auto">
           {visibleJobs.map((job) => (
             <div
               key={job.id}
@@ -304,27 +330,27 @@ const App = () => {
             >
               {/* Top Section with Gradient and Icon */}
               <div
-                className={`relative w-full h-28 ${job.bgColor} flex items-center justify-center`}
+                className="relative w-full h-24 sm:h-28 flex items-center justify-center"
                 style={{ backgroundImage: `url(${job_bg})`, backgroundSize: 'cover', backgroundPosition: 'center' }}
               >
                 <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
-                <h3 className="z-10 text-white text-2xl font-bold">
+                <h3 className="z-10 text-white text-lg sm:text-2xl font-bold text-center px-2">
                   {job.title}
                 </h3>
               </div>
 
               {/* Main Content */}
-              <div className="p-5">
+              <div className="p-3 sm:p-5">
                 {/* Organization Name */}
-                <p className="text-gray-700 text-lg font-medium mb-3">
+                <p className="text-gray-700 text-base sm:text-lg font-medium mb-3">
                   {job.organization}
                 </p>
 
                 {/* Metadata Section */}
-                <div className="flex flex-col gap-2 text-sm text-gray-600">
+                <div className="flex flex-col gap-2 text-xs sm:text-sm text-gray-600">
                   <div className="flex items-center gap-2">
                     <span className="text-purple-500">📍</span>
-                    <p>{job.location}</p>
+                    <p className="truncate">{job.location}</p>
                   </div>
                   <div className="flex items-center gap-2">
                     <span className="text-blue-500">🕒</span>
@@ -337,13 +363,13 @@ const App = () => {
                 </div>
 
                 {/* Bottom Section */}
-                <div className="flex justify-between items-center mt-5">
-                  <div className="text-gray-500 text-sm flex gap-3">
+                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mt-5 gap-3">
+                  <div className="text-gray-500 text-xs sm:text-sm flex flex-col sm:flex-row gap-1 sm:gap-3">
                     <span>👁️ {job.views} Views</span>
                     <span>⏳ {job.daysLeft} Days Left</span>
                   </div>
                   <button
-                    className="px-4 py-2 bg-[#0a66c2] badge text-white text-sm font-semibold rounded-full hover:opacity-90 transition"
+                    className="px-3 sm:px-4 py-2 bg-[#0a66c2] badge text-white text-xs sm:text-sm font-semibold rounded-full hover:opacity-90 transition w-full sm:w-auto"
                     onClick={() => setModal(job)}
                   >
                     View Details
@@ -355,14 +381,14 @@ const App = () => {
         </div>
         <div className="flex justify-center gap-2 mt-5">
           <button
-            className="px-4 py-2 bg-blue-500 text-white rounded-s-full hover:bg-blue-600 disabled:bg-gray-300 disabled:cursor-not-allowed text-xl"
+            className="px-3 sm:px-4 py-2 bg-blue-500 text-white rounded-s-full hover:bg-blue-600 disabled:bg-gray-300 disabled:cursor-not-allowed text-lg sm:text-xl"
             onClick={handleJobPrev}
             disabled={jobIndex === 0}
           >
             &larr;
           </button>
           <button
-            className="px-4 py-2 bg-blue-500 text-white rounded-e-full hover:bg-blue-600 disabled:bg-gray-300 disabled:cursor-not-allowed text-xl"
+            className="px-3 sm:px-4 py-2 bg-blue-500 text-white rounded-e-full hover:bg-blue-600 disabled:bg-gray-300 disabled:cursor-not-allowed text-lg sm:text-xl"
             onClick={handleJobNext}
             disabled={jobIndex + itemsPerPage >= jobsData.length}
           >
@@ -371,10 +397,11 @@ const App = () => {
         </div>
       </div>
       <Modal internship={modal} onClose={() => setModal(null)} />
+
       {/* Latest Courses Section */}
-      <div className="w-full text-center mb-10">
-        <h2 className="text-3xl font-bold mb-5">Kickstart</h2>
-        <div className="grid grid-cols-4 gap-5">
+      <div className="w-full text-center mb-6 sm:mb-10 px-4">
+        <h2 className="text-2xl sm:text-3xl font-bold mb-5">Kickstart</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 max-w-7xl mx-auto">
           {visibleCourses.map((course) => (
             <div
               key={course.id}
@@ -382,27 +409,27 @@ const App = () => {
             >
               {/* Top Section with Gradient and Icon */}
               <div
-                className={`relative w-full h-28 ${course.bgColor} flex items-center justify-center`}
+                className="relative w-full h-24 sm:h-28 flex items-center justify-center"
                 style={{ backgroundImage: `url(${course_bg})`, backgroundSize: 'cover', backgroundPosition: 'center' }}
               >
                 <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
-                <h3 className="z-10 text-white text-2xl font-bold">
+                <h3 className="z-10 text-white text-lg sm:text-2xl font-bold text-center px-2">
                   {course.title}
                 </h3>
               </div>
 
               {/* Main Content */}
-              <div className="p-5">
+              <div className="p-3 sm:p-5">
                 {/* Organization Name */}
-                <p className="text-gray-700 text-lg font-medium mb-3">
+                <p className="text-gray-700 text-base sm:text-lg font-medium mb-3">
                   {course.organization}
                 </p>
 
                 {/* Metadata Section */}
-                <div className="flex flex-col gap-2 text-sm text-gray-600">
+                <div className="flex flex-col gap-2 text-xs sm:text-sm text-gray-600">
                   <div className="flex items-center gap-2">
                     <span className="text-purple-500">📍</span>
-                    <p>{course.location}</p>
+                    <p className="truncate">{course.location}</p>
                   </div>
                   <div className="flex items-center gap-2">
                     <span className="text-blue-500">🕒</span>
@@ -415,13 +442,13 @@ const App = () => {
                 </div>
 
                 {/* Bottom Section */}
-                <div className="flex justify-between items-center mt-5">
-                  <div className="text-gray-500 text-sm flex gap-3">
+                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mt-5 gap-3">
+                  <div className="text-gray-500 text-xs sm:text-sm flex flex-col sm:flex-row gap-1 sm:gap-3">
                     <span>👁️ {course.views} Views</span>
                     <span>⏳ {course.daysLeft} Days Left</span>
                   </div>
                   <button
-                    className="px-4 py-2 bg-[#0a66c2] badge text-white text-sm font-semibold rounded-full hover:opacity-90 transition"
+                    className="px-3 sm:px-4 py-2 bg-[#0a66c2] badge text-white text-xs sm:text-sm font-semibold rounded-full hover:opacity-90 transition w-full sm:w-auto"
                     onClick={() => setModal(course)}
                   >
                     View Details
@@ -433,14 +460,14 @@ const App = () => {
         </div>
         <div className="flex justify-center gap-2 mt-5">
           <button
-            className="px-4 py-2 bg-blue-500 text-white rounded-s-full hover:bg-blue-600 disabled:bg-gray-300 disabled:cursor-not-allowed text-xl"
+            className="px-3 sm:px-4 py-2 bg-blue-500 text-white rounded-s-full hover:bg-blue-600 disabled:bg-gray-300 disabled:cursor-not-allowed text-lg sm:text-xl"
             onClick={handleCoursePrev}
             disabled={courseIndex === 0}
           >
             &larr;
           </button>
           <button
-            className="px-4 py-2 bg-blue-500 text-white rounded-e-full hover:bg-blue-600 disabled:bg-gray-300 disabled:cursor-not-allowed text-xl"
+            className="px-3 sm:px-4 py-2 bg-blue-500 text-white rounded-e-full hover:bg-blue-600 disabled:bg-gray-300 disabled:cursor-not-allowed text-lg sm:text-xl"
             onClick={handleCourseNext}
             disabled={courseIndex + itemsPerPage >= coursesData.length}
           >
