@@ -34,6 +34,7 @@ import Login2 from "./Components/Login2.jsx";
 import ProfilePage2 from "./Components/Profile/profilePage2.jsx";
 import InternshipList from "./Components/Dropdowns/Intern/InternshipLlist.jsx";
 import CourseList from "./Components/Dropdowns/Course/CourseList.jsx";
+import PrivacyPage from "./Components/PrivacyPolicy.jsx";
 
 const router = createBrowserRouter([
   {
@@ -67,6 +68,7 @@ const router = createBrowserRouter([
       { path: "mentor", element: <MentorPage /> },
       { path: "book", element: <BookPage /> },
       { path: "performance", element: <PerformanceTracker /> },
+      { path: "privacy", element: <PrivacyPage /> },
     ]
   }
 ]);
