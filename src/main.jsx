@@ -32,6 +32,8 @@ import {
 } from "./Components/index.js";
 import Login2 from "./Components/Login2.jsx";
 import ProfilePage2 from "./Components/Profile/profilePage2.jsx";
+import InternshipList from "./Components/Dropdowns/Intern/InternshipLlist.jsx";
+import CourseList from "./Components/Dropdowns/Course/CourseList.jsx";
 
 const router = createBrowserRouter([
   {
@@ -56,10 +58,11 @@ const router = createBrowserRouter([
       { path: "job/:id", element: <JobDetail /> }, // Individual job detail by MongoDB _id
       
       // Internship routes
-      { path: "internships", element: <InternshipDetail /> },
+      { path: "internships", element: <InternshipList /> },
       { path: "internship/:id", element: <InternshipDetail /> },
       
-      { path: "courses", element: <CourseDetail /> },
+      { path: "courses", element: <CourseList /> },
+      { path: "course/:id", element: <CourseDetail /> },
       { path: "abroad", element: <AbroadPage /> },
       { path: "mentor", element: <MentorPage /> },
       { path: "book", element: <BookPage /> },

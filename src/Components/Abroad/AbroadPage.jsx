@@ -1,45 +1,27 @@
-// import React from 'react'
+import React, { useState } from "react";
+import "./abroad.css";
 
-// export default function About() {
-//   return (
-//       <div className="py-16 bg-[#eff7fc]">
-//           <div className="container m-auto px-6 text-gray-600 md:px-12 xl:px-6">
-//               <div className="space-y-6 md:space-y-0 md:flex md:gap-6 lg:items-center lg:gap-12">
-//                   <div className="md:5/12 lg:w-5/12">
-//                       <img
-//                           src="https://images.pexels.com/photos/3153201/pexels-photo-3153201.jpeg?cs=srgb&dl=pexels-canvastudio-3153201.jpg&fm=jpg"
-//                           alt="image"
-//                       />
-//                   </div>
-//                   <div className="md:7/12 lg:w-6/12">
-//                       <h2 className="text-2xl text-gray-900 font-bold md:text-4xl">
-//                           React development is carried out by passionate developers
-//                       </h2>
-//                       <p className="mt-6 text-gray-600">
-//                           Lorem ipsum dolor, sit amet consectetur adipisicing elit. Eum omnis voluptatem
-//                           accusantium nemo perspiciatis delectus atque autem! Voluptatum tenetur beatae unde
-//                           aperiam, repellat expedita consequatur! Officiis id consequatur atque doloremque!
-//                       </p>
-//                       <p className="mt-4 text-gray-600">
-//                           Nobis minus voluptatibus pariatur dignissimos libero quaerat iure expedita at?
-//                           Asperiores nemo possimus nesciunt dicta veniam aspernatur quam mollitia.
-//                       </p>
-//                   </div>
-//               </div>
-//           </div>
-//       </div>
-//   );
-// }
-import React from 'react';
-import "./abroad.css"
 const AbroadPage = () => {
+  const [showPopup, setShowPopup] = useState(false);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setShowPopup(true);
+
+    // Auto-close the popup after 3 seconds
+    setTimeout(() => {
+      setShowPopup(false);
+    }, 3000);
+  };
+
   return (
-    <div className="min-h-screen flex flex-col justify-center items-center -mt-8 bg-[url('/src/Components/Abroad/bgImg.jpg')] bg-cover bg-center m-0">
-      {/* Header Section */}
+    <div className="min-h-screen flex flex-col justify-center items-center -mt-8 bg-[url('/src/Components/Abroad/bgImg.jpg')] bg-cover bg-center m-0 relative">
+      {/* Header */}
       <div className="text-center mb-8">
-      <h1 className="text-3xl md:text-4xl font-bold text-gray-800">
-          Find Your <span className="text-[#0a66c2]"> Dream College </span> Abroad For MBA & Masters
-        </h1>
+        <h1 className="text-3xl md:text-4xl font-bold text-gray-800">
+          Find Your <span className="text-[#0a66c2]"> Dream College </span>{" "}
+          Abroad For MBA & MSc
+        </h1>
         <p className="text-gray-600 text-base md:text-xl mt-4">
           Choose from over 4,000 colleges, get free personalized counseling,
         </p>
@@ -48,11 +30,10 @@ const AbroadPage = () => {
         </p>
       </div>
 
-      {/* Form Section */}
+      {/* Form */}
       <div className="bg-white shadow-md rounded-lg p-6 w-full max-w-lg">
         <p className="text-gray-700 font-medium mb-4">I'm looking for</p>
-        <form className="space-y-4">
-          {/* Specialization Dropdown */}
+        <form className="space-y-4" onSubmit={handleSubmit}>
           <div>
             <label
               htmlFor="specialization"
@@ -68,11 +49,9 @@ const AbroadPage = () => {
               <option>Business Administration</option>
               <option>Engineering</option>
               <option>Healthcare</option>
-              {/* Add more options as needed */}
             </select>
           </div>
 
-          {/* Country Dropdown */}
           <div>
             <label
               htmlFor="country"
@@ -89,11 +68,9 @@ const AbroadPage = () => {
               <option>Canada</option>
               <option>Australia</option>
               <option>Germany</option>
-              {/* Add more options as needed */}
             </select>
           </div>
 
-          {/* Submit Button */}
           <button
             type="submit"
             className="w-full bg-[#0a66c2] hover:bg-blue-600 text-white font-medium py-2 rounded-md transition badge"
@@ -102,6 +79,20 @@ const AbroadPage = () => {
           </button>
         </form>
       </div>
+
+      {/* Animated Popup */}
+      {showPopup && (
+        <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
+          <div className="bg-white rounded-xl px-10 py-8 w-[90%] max-w-md shadow-xl transform transition-all duration-500 scale-100 opacity-100">
+            <h2 className="text-2xl font-bold text-gray-800 text-center mb-4">
+              🎓 Thank You!
+            </h2>
+            <p className="text-gray-600 text-lg text-center">
+              We've received your request. You'll hear from us shortly!
+            </p>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

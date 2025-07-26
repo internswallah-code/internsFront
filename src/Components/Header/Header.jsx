@@ -367,7 +367,7 @@ export default function Header() {
                           className="px-3 py-1.5 hover:bg-gray-100 rounded-lg border-b"
                           onClick={() => setDropdown("")}
                         >
-                          Your Application
+                          Profile
                         </Link>
                       )}
                       {user?.userType === "employee" && (
@@ -392,13 +392,6 @@ export default function Header() {
                         onClick={() => setDropdown("")}
                       >
                         Contact Us
-                      </Link>
-                      <Link
-                        to="/setting"
-                        className="px-3 py-1.5 hover:bg-gray-100 rounded-lg border-t-2"
-                        onClick={() => setDropdown("")}
-                      >
-                        Settings
                       </Link>
                       <button
                         onClick={logoutHandler}

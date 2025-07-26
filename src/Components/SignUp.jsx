@@ -75,7 +75,9 @@ function SignUp() {
       }
 
       // ✅ Immediately update Redux state so header/profile updates
-      dispatch(reduxLogin({ userData: { ...result.user, userType: "employer" } }));
+      dispatch(
+        reduxLogin({ userData: { ...result.user, userType: "employer" } })
+      );
 
       navigate("/");
     } catch (error) {
@@ -103,8 +105,8 @@ function SignUp() {
               </p>
               <p className="text-sm sm:text-base text-blue-100">
                 Already have an account?{" "}
-                <Link 
-                  className="text-white font-semibold hover:text-blue-200 hover:underline transition-colors duration-200" 
+                <Link
+                  className="text-white font-semibold hover:text-blue-200 hover:underline transition-colors duration-200"
                   to="/login"
                 >
                   Sign In
@@ -117,21 +119,37 @@ function SignUp() {
           <div className="px-6 py-4 sm:px-8 lg:px-12 bg-gray-50 border-b">
             <div className="flex items-center justify-center space-x-4">
               <div className="flex items-center">
-                <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center text-sm sm:text-base font-semibold ${
-                  step >= 1 ? 'bg-[#0a66c2] text-white' : 'bg-gray-300 text-gray-600'
-                }`}>
+                <div
+                  className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center text-sm sm:text-base font-semibold ${
+                    step >= 1
+                      ? "bg-[#0a66c2] text-white"
+                      : "bg-gray-300 text-gray-600"
+                  }`}
+                >
                   1
                 </div>
-                <span className="ml-2 text-xs sm:text-sm font-medium text-gray-700">Personal Info</span>
+                <span className="ml-2 text-xs sm:text-sm font-medium text-gray-700">
+                  Personal Info
+                </span>
               </div>
-              <div className={`w-8 sm:w-12 h-0.5 ${step >= 2 ? 'bg-[#0a66c2]' : 'bg-gray-300'}`}></div>
+              <div
+                className={`w-8 sm:w-12 h-0.5 ${
+                  step >= 2 ? "bg-[#0a66c2]" : "bg-gray-300"
+                }`}
+              ></div>
               <div className="flex items-center">
-                <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center text-sm sm:text-base font-semibold ${
-                  step >= 2 ? 'bg-[#0a66c2] text-white' : 'bg-gray-300 text-gray-600'
-                }`}>
+                <div
+                  className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center text-sm sm:text-base font-semibold ${
+                    step >= 2
+                      ? "bg-[#0a66c2] text-white"
+                      : "bg-gray-300 text-gray-600"
+                  }`}
+                >
                   2
                 </div>
-                <span className="ml-2 text-xs sm:text-sm font-medium text-gray-700">Company Details</span>
+                <span className="ml-2 text-xs sm:text-sm font-medium text-gray-700">
+                  Company Details
+                </span>
               </div>
             </div>
           </div>
@@ -141,7 +159,9 @@ function SignUp() {
             {/* Error Message */}
             {error && (
               <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
-                <p className="text-red-600 text-sm sm:text-base text-center">{error}</p>
+                <p className="text-red-600 text-sm sm:text-base text-center">
+                  {error}
+                </p>
               </div>
             )}
 
@@ -174,7 +194,9 @@ function SignUp() {
                         placeholder="Enter Your Email"
                         type="email"
                         className="w-full"
-                        {...register("email", { required: "Email is required" })}
+                        {...register("email", {
+                          required: "Email is required",
+                        })}
                       />
                       {errors.email && (
                         <p className="text-red-500 text-xs sm:text-sm mt-1">
@@ -236,12 +258,100 @@ function SignUp() {
                       </label>
                       <select
                         className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#0a66c2] focus:border-transparent text-sm sm:text-base"
-                        {...register("city", { required: "City is required" })}
+                        {...register("city", { required: "City is required." })}
                       >
                         <option value="">Select City</option>
-                        <option value="Delhi">Delhi</option>
-                        <option value="Mumbai">Mumbai</option>
-                        <option value="Bangalore">Bangalore</option>
+                        {[
+                          "Agra",
+                          "Ahmedabad",
+                          "Ajmer",
+                          "Aligarh",
+                          "Allahabad",
+                          "Amritsar",
+                          "Aurangabad",
+                          "Bangalore",
+                          "Bareilly",
+                          "Bhopal",
+                          "Bhubaneswar",
+                          "Chandigarh",
+                          "Chennai",
+                          "Coimbatore",
+                          "Cuttack",
+                          "Dehradun",
+                          "Delhi",
+                          "Dhanbad",
+                          "Durgapur",
+                          "Faridabad",
+                          "Firozabad",
+                          "Ghaziabad",
+                          "Goa",
+                          "Gorakhpur",
+                          "Guntur",
+                          "Gurgaon",
+                          "Guwahati",
+                          "Gwalior",
+                          "Hyderabad",
+                          "Indore",
+                          "Jabalpur",
+                          "Jaipur",
+                          "Jalandhar",
+                          "Jammu",
+                          "Jamnagar",
+                          "Jamshedpur",
+                          "Jhansi",
+                          "Jodhpur",
+                          "Kanpur",
+                          "Kochi",
+                          "Kolhapur",
+                          "Kolkata",
+                          "Kota",
+                          "Kozhikode",
+                          "Lucknow",
+                          "Ludhiana",
+                          "Madurai",
+                          "Mangalore",
+                          "Meerut",
+                          "Moradabad",
+                          "Mumbai",
+                          "Muzaffarpur",
+                          "Mysore",
+                          "Nagpur",
+                          "Nashik",
+                          "Navi Mumbai",
+                          "Noida",
+                          "Patna",
+                          "Pimpri-Chinchwad",
+                          "Pondicherry",
+                          "Prayagraj",
+                          "Pune",
+                          "Raipur",
+                          "Rajkot",
+                          "Ranchi",
+                          "Rohtak",
+                          "Rourkela",
+                          "Salem",
+                          "Siliguri",
+                          "Solapur",
+                          "Srinagar",
+                          "Surat",
+                          "Thane",
+                          "Thiruvananthapuram",
+                          "Tiruchirappalli",
+                          "Tirunelveli",
+                          "Udaipur",
+                          "Ujjain",
+                          "Vadodara",
+                          "Varanasi",
+                          "Vasai-Virar",
+                          "Vellore",
+                          "Vijayawada",
+                          "Visakhapatnam",
+                          "Warangal",
+                        ].map((city) => (
+                          <option key={city} value={city}>
+                            {city}
+                          </option>
+                        ))}
                       </select>
                       {errors.city && (
                         <p className="text-red-500 text-xs sm:text-sm mt-1">
@@ -257,7 +367,9 @@ function SignUp() {
                         placeholder="Company Address"
                         type="text"
                         className="w-full"
-                        {...register("address", { required: "Address is required" })}
+                        {...register("address", {
+                          required: "Address is required",
+                        })}
                       />
                       {errors.address && (
                         <p className="text-red-500 text-xs sm:text-sm mt-1">
@@ -296,7 +408,7 @@ function SignUp() {
                       Field of Work
                     </label>
                     <div className="flex flex-wrap gap-2 sm:gap-3">
-                      {["Technical", "Designing", "Research", "Marketing"].map(
+                      {["Technical", "Designing", "Research", "Marketing", "B2B"].map(
                         (field) => (
                           <button
                             key={field}
@@ -359,7 +471,7 @@ function SignUp() {
                     </Button>
                   )}
                 </div>
-                
+
                 <div className="flex gap-3 w-full sm:w-auto">
                   {step < 2 ? (
                     <Button
@@ -377,9 +489,25 @@ function SignUp() {
                     >
                       {isSubmitting ? (
                         <span className="flex items-center justify-center">
-                          <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                          <svg
+                            className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                          >
+                            <circle
+                              className="opacity-25"
+                              cx="12"
+                              cy="12"
+                              r="10"
+                              stroke="currentColor"
+                              strokeWidth="4"
+                            ></circle>
+                            <path
+                              className="opacity-75"
+                              fill="currentColor"
+                              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                            ></path>
                           </svg>
                           Creating Account...
                         </span>
