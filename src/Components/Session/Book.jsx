@@ -68,7 +68,6 @@ const TimePicker = ({ selectedDate, onDateChange, onTimeChange, onClose }) => {
                 </button>
               </div>
             </div>
-
             {/* Clock Face */}
             <div className="relative w-64 h-64 mx-auto bg-gray-100 rounded-full border-3 border-[#0a66c2]">
               {/* Clock Numbers */}
@@ -77,9 +76,7 @@ const TimePicker = ({ selectedDate, onDateChange, onTimeChange, onClose }) => {
                 const radius = 100
                 const x = radius * Math.cos(angle) + 128
                 const y = radius * Math.sin(angle) + 128
-
                 const isSelected = isHourView ? number === selectedHour : number === selectedMinute
-
                 return (
                   <button
                     key={number}
@@ -96,7 +93,6 @@ const TimePicker = ({ selectedDate, onDateChange, onTimeChange, onClose }) => {
                   </button>
                 )
               })}
-
               {/* Clock Hand */}
               <div
                 className="absolute w-1 bg-[#0a66c2] origin-bottom rounded-full left-1/2 -translate-x-1/2"
@@ -109,7 +105,6 @@ const TimePicker = ({ selectedDate, onDateChange, onTimeChange, onClose }) => {
             </div>
           </>
         )}
-
         {/* Action Buttons */}
         <div className="flex justify-end gap-2 mt-4">
           <button onClick={onClose} className="px-4 py-2 text-[#0a66c2] hover:bg-gray-100 rounded">
@@ -139,85 +134,100 @@ export default function BookPage() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col justify-center items-center bg-[url('/src/Components/Session/back.png')] bg-cover bg-center relative">
-      {/* Header Section */}
-      <motion.div
-        className="text-center mb-8"
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8 }}
-      >
-        <h1 className="text-3xl md:text-4xl font-bold text-gray-800">
-          Book A <span className="text-[#0a66c2]">1:1</span> Counselling Session
-        </h1>
-        <p className="text-gray-600 text-base md:text-xl mt-4">
-          Book a session with experienced mentors across domains & work
-        </p>
-        <p className="text-gray-600 text-base md:text-xl mt-4">together to build your career!</p>
-      </motion.div>
+    <div className="min-h-screen flex flex-col justify-center items-center relative">
+      {/* Background Image Container */}
+      <div
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+        style={{
+          backgroundImage: "url('/images/back.png')",
+          backgroundAttachment: "scroll",
+        }}
+      />
 
-      {/* Form Section */}
-      <motion.div
-        className="bg-white shadow-lg rounded-lg p-6 w-full max-w-lg"
-        initial={{ scale: 0.9, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        transition={{ duration: 0.5, ease: "easeOut" }}
-      >
-        <p className="text-gray-700 font-medium mb-4">Tell us about your concerns</p>
-        <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
-          {/* Input for Problems or Concerns */}
-          <div>
-            <label htmlFor="concerns" className="block text-sm font-medium text-gray-700">
-              Want to tell about your
-            </label>
-            <input
-              id="concerns"
-              type="text"
-              className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-[#0a66c2] focus:border-[#0a66c2]"
-              placeholder="Describe your concerns..."
-            />
-          </div>
+      {/* Overlay for better text readability */}
+      <div className="absolute inset-0 bg-black/10" />
 
-          {/* Date and Time Picker */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5 }}
-          >
-            <label className="block text-sm font-medium text-gray-700 text-center">Choose specific slot</label>
-            <div className="mt-2 flex justify-center items-center">
-              <button
-                type="button"
-                onClick={() => setIsOpen(true)}
-                className="px-4 py-2 bg-[#0a66c2] text-white rounded hover:bg-[#0a66c2]/90 transition"
-              >
-                {selectedDate.toDateString()} {selectedTime || "Select Time"}
-              </button>
-            </div>
-          </motion.div>
+      {/* Content */}
+      <div className="relative z-10 w-full flex flex-col justify-center items-center px-4">
+        {/* Header Section */}
+        <motion.div
+          className="text-center mb-8"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+        >
+          <h1 className="text-3xl md:text-4xl font-bold text-gray-800">
+            Book A <span className="text-[#0a66c2]">1:1</span> Counselling Session
+          </h1>
+          <p className="text-gray-600 text-base md:text-xl mt-4">
+            Book a session with experienced mentors across domains & work
+          </p>
+          <p className="text-gray-600 text-base md:text-xl mt-4">together to build your career!</p>
+        </motion.div>
 
-          {isOpen && (
-            <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-              <TimePicker
-                selectedDate={selectedDate}
-                onDateChange={handleDateChange}
-                onTimeChange={handleTimeChange}
-                onClose={() => setIsOpen(false)}
+        {/* Form Section */}
+        <motion.div
+          className="bg-white shadow-lg rounded-lg p-6 w-full max-w-lg"
+          initial={{ scale: 0.9, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ duration: 0.5, ease: "easeOut" }}
+        >
+          <p className="text-gray-700 font-medium mb-4">Tell us about your concerns</p>
+          <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
+            {/* Input for Problems or Concerns */}
+            <div>
+              <label htmlFor="concerns" className="block text-sm font-medium text-gray-700">
+                Want to tell about your
+              </label>
+              <input
+                id="concerns"
+                type="text"
+                className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-[#0a66c2] focus:border-[#0a66c2]"
+                placeholder="Describe your concerns..."
               />
             </div>
-          )}
 
-          {/* Submit Button */}
-          <motion.button
-            type="submit"
-            className="w-full bg-[#0a66c2] hover:bg-[#0a66c2]/90 text-white font-medium py-2 rounded-md transition shadow-md"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            BOOK A SESSION
-          </motion.button>
-        </form>
-      </motion.div>
+            {/* Date and Time Picker */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.5 }}
+            >
+              <label className="block text-sm font-medium text-gray-700 text-center">Choose specific slot</label>
+              <div className="mt-2 flex justify-center items-center">
+                <button
+                  type="button"
+                  onClick={() => setIsOpen(true)}
+                  className="px-4 py-2 bg-[#0a66c2] text-white rounded hover:bg-[#0a66c2]/90 transition"
+                >
+                  {selectedDate.toDateString()} {selectedTime || "Select Time"}
+                </button>
+              </div>
+            </motion.div>
+
+            {isOpen && (
+              <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                <TimePicker
+                  selectedDate={selectedDate}
+                  onDateChange={handleDateChange}
+                  onTimeChange={handleTimeChange}
+                  onClose={() => setIsOpen(false)}
+                />
+              </div>
+            )}
+
+            {/* Submit Button */}
+            <motion.button
+              type="submit"
+              className="w-full bg-[#0a66c2] hover:bg-[#0a66c2]/90 text-white font-medium py-2 rounded-md transition shadow-md"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              BOOK A SESSION
+            </motion.button>
+          </form>
+        </motion.div>
+      </div>
     </div>
   )
 }
