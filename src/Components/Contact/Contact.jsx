@@ -163,7 +163,7 @@ const ContactUs = () => {
           <h3 className="text-xl font-bold text-gray-800 mb-4">Find Us Here</h3>
           <div className="aspect-w-16 aspect-h-9">
             <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d224345.48429062043!2d77.06889736546224!3d28.52758200762379!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390ce3a887fefcc5%3A0x63bb4315ef5e7a54!2sNew%20Delhi%2C%20Delhi!5e0!3m2!1sen!2sin!4v1717755555555!5m2!1sen!2sin"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3495.3524968120297!2d76.960382!3d28.4707029!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390d19b52a7c4b77%3A0xd0f05709e7e96940!2sSatya%20The%20Hive!5e0!3m2!1sen!2sin!4v1722094555555!5m2!1sen!2sin"
               width="100%"
               height="450"
               style={{ border: 0 }}
