@@ -16,7 +16,7 @@ import {
   Radar,
   Tooltip,
 } from "recharts"
-import { getCurrentUser } from "./dummyData"
+import { useEffect, useState } from "react"
 
 // Custom Components
 const Card = ({ children, className = "" }) => (
@@ -77,8 +77,170 @@ const CustomTooltip = ({ active, payload, label }) => {
 }
 
 const PerformanceTracker = () => {
-  const userData = getCurrentUser()
-  const { personalInfo, academicInfo, internshipDetails, skills, tasks, performanceMetrics, attendance } = userData
+  const [profile, setProfile] = useState(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
+
+  useEffect(() => {
+    async function fetchProfile() {
+      try {
+        const response = await fetch(`${import.meta.env.VITE_BASE_URL || 'http://localhost:4000'}/employee-profile`, {
+          method: 'GET',
+          credentials: 'include',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        })
+        
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`)
+        }
+        
+        const data = await response.json()
+        console.log("Profile data fetched:", data)
+        setProfile(data)
+      } catch (error) {
+        console.error("Error fetching profile:", error)
+        setError(error.message)
+      } finally {
+        setLoading(false)
+      }
+    }
+    
+    fetchProfile()
+  }, [])
+
+  // Default/fallback data structure
+  const getDefaultData = () => ({
+    personalInfo: {
+      firstName: "John",
+      lastName: "Doe",
+      email: "john.doe@example.com",
+      phone: "+1 234 567 8900",
+      profileImage: null,
+      address: { city: "New York" }
+    },
+    academicInfo: {
+      university: "University Name"
+    },
+    internshipDetails: {
+      title: "Software Development Intern",
+      duration: 90,
+      startDate: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString(),
+      endDate: new Date(Date.now() + 60 * 24 * 60 * 60 * 1000).toISOString()
+    },
+    skills: [
+      { name: "JavaScript", level: 85 },
+      { name: "React", level: 80 },
+      { name: "Node.js", level: 75 },
+      { name: "Python", level: 70 },
+      { name: "SQL", level: 65 },
+      { name: "Git", level: 90 }
+    ],
+    tasks: [
+      { status: "completed" },
+      { status: "completed" },
+      { status: "completed" },
+      { status: "in-progress" },
+      { status: "pending" }
+    ],
+    performanceMetrics: {
+      overallRating: 4.2,
+      technicalSkills: 4,
+      communication: 4,
+      teamwork: 5,
+      problemSolving: 4,
+      timeManagement: 3,
+      initiative: 4
+    },
+    weeklyReports: [
+      { week: 1, tasksCompleted: 3, hoursWorked: 40, productivity: 85 },
+      { week: 2, tasksCompleted: 5, hoursWorked: 42, productivity: 88 },
+      { week: 3, tasksCompleted: 4, hoursWorked: 38, productivity: 82 },
+      { week: 4, tasksCompleted: 6, hoursWorked: 45, productivity: 90 }
+    ]
+  })
+
+  // Map backend data to expected structure
+  const mapProfileData = (backendData) => {
+    if (!backendData) return getDefaultData()
+
+    // Extract name parts
+    const nameParts = backendData.fullName ? backendData.fullName.split(' ') : ['John', 'Doe']
+    const firstName = nameParts[0] || 'John'
+    const lastName = nameParts.slice(1).join(' ') || 'Doe'
+
+    return {
+      personalInfo: {
+        firstName,
+        lastName,
+        email: backendData.email || "user@example.com",
+        phone: backendData.phone || "+1 234 567 8900",
+        profileImage: backendData.profileImage || null,
+        address: { city: backendData.city || "Unknown City" }
+      },
+      academicInfo: {
+        university: backendData.university || backendData.education || "University Name"
+      },
+      internshipDetails: {
+        title: backendData.jobTitle || backendData.position || "Software Development Intern",
+        duration: backendData.internshipDuration || 90,
+        startDate: backendData.startDate || new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString(),
+        endDate: backendData.endDate || new Date(Date.now() + 60 * 24 * 60 * 60 * 1000).toISOString()
+      },
+      skills: backendData.skills?.map(skill => ({
+        name: typeof skill === 'string' ? skill : skill.name || skill,
+        level: typeof skill === 'object' ? skill.level || Math.floor(Math.random() * 40) + 60 : Math.floor(Math.random() * 40) + 60
+      })) || getDefaultData().skills,
+      tasks: backendData.tasks || [
+        ...Array(Math.floor(Math.random() * 5) + 3).fill({ status: "completed" }),
+        ...Array(Math.floor(Math.random() * 3) + 1).fill({ status: "in-progress" }),
+        ...Array(Math.floor(Math.random() * 2) + 1).fill({ status: "pending" })
+      ],
+      performanceMetrics: {
+        overallRating: backendData.rating || backendData.overallRating || (3.5 + Math.random() * 1.5),
+        technicalSkills: backendData.technicalSkills || 4,
+        communication: backendData.communication || 4,
+        teamwork: backendData.teamwork || 4,
+        problemSolving: backendData.problemSolving || 4,
+        timeManagement: backendData.timeManagement || 3,
+        initiative: backendData.initiative || 4
+      },
+      weeklyReports: backendData.weeklyReports || getDefaultData().weeklyReports
+    }
+  }
+
+  if (loading) {
+    return (
+      <div className="flex flex-col items-center justify-center h-screen bg-gray-100 px-4">
+        <div className="w-12 h-12 border-4 border-gray-300 border-t-[#0a66c2] rounded-full animate-spin"></div>
+        <h2 className="mt-4 text-lg font-medium text-gray-700 text-center">
+          Loading your performance data...
+        </h2>
+      </div>
+    )
+  }
+
+  if (error) {
+    return (
+      <div className="flex flex-col items-center justify-center h-screen bg-gray-100 px-4">
+        <div className="text-red-500 text-center">
+          <h2 className="text-xl font-semibold mb-2">Error Loading Data</h2>
+          <p className="text-gray-600">{error}</p>
+          <button 
+            onClick={() => window.location.reload()} 
+            className="mt-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+          >
+            Retry
+          </button>
+        </div>
+      </div>
+    )
+  }
+
+  // Use mapped data
+  const userData = mapProfileData(profile)
+  const { personalInfo, internshipDetails, skills, tasks, performanceMetrics } = userData
 
   const fullName = `${personalInfo.firstName} ${personalInfo.lastName}`
 
@@ -91,10 +253,10 @@ const PerformanceTracker = () => {
   const today = new Date()
   const startDate = new Date(internshipDetails.startDate)
   const endDate = new Date(internshipDetails.endDate)
-  const daysLeft = Math.ceil((endDate - today) / (1000 * 60 * 60 * 24))
+  const daysLeft = Math.max(0, Math.ceil((endDate - today) / (1000 * 60 * 60 * 24)))
   const totalDays = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24))
   const daysCompleted = totalDays - daysLeft
-  const timeProgress = (daysCompleted / totalDays) * 100
+  const timeProgress = totalDays > 0 ? (daysCompleted / totalDays) * 100 : 0
 
   // Data for pie chart
   const taskStatusData = [
@@ -151,7 +313,7 @@ const PerformanceTracker = () => {
                 <h1 className="text-3xl font-bold text-gray-900">{fullName}</h1>
                 <div className="flex items-center space-x-2">
                   <Star className="h-5 w-5 text-yellow-500 fill-current" />
-                  <span className="text-lg font-semibold">{performanceMetrics.overallRating}/5.0</span>
+                  <span className="text-lg font-semibold">{performanceMetrics.overallRating.toFixed(1)}/5.0</span>
                 </div>
               </div>
 
@@ -165,10 +327,6 @@ const PerformanceTracker = () => {
                 <div className="flex items-center space-x-2 text-gray-600">
                   <Phone className="h-4 w-4" />
                   <span className="text-sm">{personalInfo.phone}</span>
-                </div>
-                <div className="flex items-center space-x-2 text-gray-600">
-                  <GraduationCap className="h-4 w-4" />
-                  <span className="text-sm">{academicInfo.university}</span>
                 </div>
                 <div className="flex items-center space-x-2 text-gray-600">
                   <MapPin className="h-4 w-4" />
@@ -240,7 +398,7 @@ const PerformanceTracker = () => {
           </CardContent>
         </Card>
 
-        {/* New Conversion Rate Card */}
+        {/* Conversion Rate Card */}
         <Card className="bg-gradient-to-br from-indigo-50 to-blue-50 border-indigo-200">
           <CardContent className="p-4">
             <div className="text-center space-y-2">
@@ -310,7 +468,7 @@ const PerformanceTracker = () => {
                 <Progress value={timeProgress} className="h-3" />
               </div>
 
-              {/* New Conversion Rate Bar */}
+              {/* Enhanced Conversion Rate Bar */}
               <div className="bg-gradient-to-r from-blue-50 to-purple-50 p-4 rounded-lg border border-blue-200">
                 <div className="space-y-3">
                   <div className="flex justify-between items-center">
@@ -326,7 +484,6 @@ const PerformanceTracker = () => {
                     </div>
                   </div>
 
-                  {/* Enhanced Progress Bar */}
                   <div className="relative">
                     <div className="w-full bg-gray-200 rounded-full h-4">
                       <div
@@ -339,12 +496,10 @@ const PerformanceTracker = () => {
                         }`}
                         style={{ width: `${conversionRate}%` }}
                       >
-                        {/* Animated shine effect */}
                         <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent opacity-30 animate-pulse"></div>
                       </div>
                     </div>
 
-                    {/* Progress markers */}
                     <div className="flex justify-between text-xs text-gray-400 mt-1">
                       <span>0%</span>
                       <span>25%</span>
@@ -354,7 +509,6 @@ const PerformanceTracker = () => {
                     </div>
                   </div>
 
-                  {/* Status indicator */}
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-2">
                       <div

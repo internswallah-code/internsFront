@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { useNavigate } from "react-router-dom"
+import { CheckCircle, XCircle, X } from "lucide-react"
 
 function JobPost() {
   const {
@@ -17,6 +18,7 @@ function JobPost() {
   const navigate = useNavigate()
 
   const [customSkills, setCustomSkills] = useState("")
+  const [modal, setModal] = useState({ show: false, type: '', message: '' })
 
   const onCustomSkillChange = (e) => {
     const value = e.target.value
@@ -24,30 +26,38 @@ function JobPost() {
     setValue("skills", value)
   }
 
- const onSubmit = async (data) => {
-  try {
-    const response = await fetch(`${import.meta.env.VITE_BASE_URL}/post-job`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include", // for setting cookies
-      body: JSON.stringify(data),
-    })
-    
-
-    const result = await response.json()
-    if (response.ok) {
-      alert("Job posted successfully!")
-    } else {
-      alert("Failed to post job: " + result.message)
-    }
-  } catch (err) {
-    alert("Error: " + err.message)
+  const showModal = (type, message) => {
+    setModal({ show: true, type, message })
   }
-  navigate("/jobs") // Redirect to homepage after posting job
-}
 
+  const closeModal = () => {
+    setModal({ show: false, type: '', message: '' })
+    if (modal.type === 'success') {
+      navigate("/jobs") // Redirect only on success
+    }
+  }
+
+  const onSubmit = async (data) => {
+    try {
+      const response = await fetch(`${import.meta.env.VITE_BASE_URL}/post-job`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include", // for setting cookies
+        body: JSON.stringify(data),
+      })
+      
+      const result = await response.json()
+      if (response.ok) {
+        showModal('success', 'Job posted successfully!')
+      } else {
+        showModal('error', `Failed to post job: ${result.message}`)
+      }
+    } catch (err) {
+      showModal('error', `Error: ${err.message}`)
+    }
+  }
 
   return (
     <div className="relative flex items-center justify-center min-h-screen bg-[#0a66c2]">
@@ -185,6 +195,49 @@ function JobPost() {
           </form>
         </div>
       </div>
+
+      {/* Interactive Modal */}
+      {modal.show && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-6 max-w-md w-mx-4 mx-4 shadow-xl">
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center">
+                {modal.type === 'success' ? (
+                  <CheckCircle className="text-blue-500 w-6 h-6 mr-2" />
+                ) : (
+                  <XCircle className="text-red-500 w-6 h-6 mr-2" />
+                )}
+                <h3 className={`text-lg font-semibold ${
+                  modal.type === 'success' ? 'text-blue-700' : 'text-red-700'
+                }`}>
+                  {modal.type === 'success' ? 'Success!' : 'Error'}
+                </h3>
+              </div>
+              <button
+                onClick={closeModal}
+                className="text-gray-400 hover:text-gray-600 transition-colors"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+            
+            <p className="text-gray-700 mb-6">{modal.message}</p>
+            
+            <div className="flex justify-end">
+              <button
+                onClick={closeModal}
+                className={`px-4 py-2 rounded font-medium transition-colors ${
+                  modal.type === 'success'
+                    ? 'bg-blue-600 hover:bg-blue-700 text-white'
+                    : 'bg-red-500 hover:bg-red-600 text-white'
+                }`}
+              >
+                {modal.type === 'success' ? 'Continue' : 'Try Again'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

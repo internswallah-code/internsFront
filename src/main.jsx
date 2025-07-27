@@ -28,13 +28,13 @@ import {
   MentorPage, 
   BookPage, 
   PerformanceTracker,
+  PrivacyPage,
   JobsList
 } from "./Components/index.js";
 import Login2 from "./Components/Login2.jsx";
 import ProfilePage2 from "./Components/Profile/profilePage2.jsx";
 import InternshipList from "./Components/Dropdowns/Intern/InternshipLlist.jsx";
 import CourseList from "./Components/Dropdowns/Course/CourseList.jsx";
-import PrivacyPage from "./Components/PrivacyPolicy.jsx";
 
 const router = createBrowserRouter([
   {
