@@ -44,7 +44,7 @@ const App = () => {
     const fetchJobs = async () => {
       try {
         setJobsLoading(true);
-        const response = await fetch('http://localhost:4000/jobs', {
+        const response = await fetch(`${import.meta.env.VITE_BASE_URL}/jobs`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
