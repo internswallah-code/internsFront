@@ -584,7 +584,7 @@ export default function Header() {
                       onClick={() => setMobileMenuOpen(false)}
                       className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-blue-400 hover:bg-gray-50 transition-colors duration-200"
                     >
-                      Your Application
+                      Profile
                     </Link>
                   )}
                   {user?.userType === "employee" && (
