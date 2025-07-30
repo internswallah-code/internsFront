@@ -15,12 +15,17 @@ const AbroadPage = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col justify-center items-center -mt-8 bg-[url('/src/Components/Abroad/bgImg.jpg')] bg-cover bg-center m-0 relative">
+    <div
+      className="min-h-screen flex flex-col justify-center items-center bg-cover bg-center bg-no-repeat bg-fixed px-4 py-10 md:py-16 relative"
+      style={{ backgroundImage: `url('/abroad-bg.jpg')` }}
+    >
+      {/* Overlay for better text visibility */}
+      <div className="absolute inset-0 bg-white/70 md:bg-white/60 backdrop-blur-sm z-0"></div>
+
       {/* Header */}
-      <div className="text-center mb-8">
+      <div className="text-center mb-8 z-10">
         <h1 className="text-3xl md:text-4xl font-bold text-gray-800">
-          Find Your <span className="text-[#0a66c2]"> Dream College </span>{" "}
-          Abroad For MBA & MSc
+          Find Your <span className="text-[#0a66c2]"> Dream College </span> Abroad For MBA & MSc
         </h1>
         <p className="text-gray-600 text-base md:text-xl mt-4">
           Choose from over 4,000 colleges, get free personalized counseling,
@@ -31,7 +36,7 @@ const AbroadPage = () => {
       </div>
 
       {/* Form */}
-      <div className="bg-white shadow-md rounded-lg p-6 w-full max-w-lg">
+      <div className="bg-white shadow-md rounded-lg p-6 w-full max-w-lg z-10">
         <p className="text-gray-700 font-medium mb-4">I'm looking for</p>
         <form className="space-y-4" onSubmit={handleSubmit}>
           <div>

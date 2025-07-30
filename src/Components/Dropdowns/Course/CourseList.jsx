@@ -47,7 +47,7 @@ const CourseList = () => {
                   </p>
                   <p className="flex items-center">
                     <FaRupeeSign className="text-green-600 mr-2" />
-                    ₹{course.stipend}/month
+                    ₹{course.fees}
                   </p>
                   <p className="flex items-center">
                     <FaRocket className="text-purple-600 mr-2" />

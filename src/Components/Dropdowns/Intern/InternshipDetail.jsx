@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import internships from "./Internship_data";
 import {
-  FaMapMarkerAlt, FaRegClock, FaRupeeSign, FaRocket, FaCalendarAlt, FaLaptop, FaClock
+  FaMapMarkerAlt, FaRegClock, FaRupeeSign, FaRocket, FaCalendarAlt, FaLaptop
 } from "react-icons/fa";
 
 const InternshipDetail = () => {
@@ -40,7 +40,7 @@ const InternshipDetail = () => {
   return (
     <div className="min-h-screen flex flex-col md:flex-row bg-gradient-to-r from-gray-50 to-gray-100 p-4 md:p-8 gap-8">
       {/* Left Section */}
-      <div className="flex flex-col w-full md:w-3/4 bg-white shadow-2xl rounded-2xl p-6 md:p-8 h-full overflow-y-auto">
+      <div className="w-full xl:w-3/4 bg-white shadow-2xl rounded-2xl p-6 sm:p-8 h-full mb-8 xl:mb-0 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-transparent">
         {/* Header */}
         <div className="flex items-center mb-6">
           <div className="w-16 h-16 md:w-20 md:h-20 bg-gradient-to-r from-blue-500 to-blue-700 flex items-center justify-center rounded-full shadow-lg mr-4 md:mr-6">
@@ -120,30 +120,38 @@ const InternshipDetail = () => {
       </div>
 
       {/* Right Section */}
-      <div className="w-full md:w-1/4 bg-white shadow-2xl rounded-2xl p-4 md:p-6 overflow-y-auto h-full">
-        <h3 className="text-xl md:text-2xl font-bold text-gray-700 mb-4 md:mb-6">
-          Other Internship Offers
-        </h3>
-        {internships.slice(0, 6).map((otherInternship, index) => (
-          <div
-            key={index}
-            className="bg-gradient-to-r from-gray-50 to-gray-100 p-4 md:p-6 rounded-lg shadow-md mb-4 md:mb-6 transition-all transform hover:scale-105 hover:shadow-xl"
-          >
-            <h4 className="text-lg md:text-xl font-semibold text-gray-800 mb-1">{otherInternship.title}</h4>
-            <p className="text-sm text-gray-600">{otherInternship.company}</p>
-            <p className="text-xs flex items-center gap-2 text-gray-500 my-1">
-              <FaMapMarkerAlt className="text-red-500" /> {otherInternship.location}
-            </p>
-            <p className="text-sm font-medium mb-2">
-              <FaRupeeSign className="inline text-green-600" /> {otherInternship.stipend} / month
-            </p>
-            <Link to={`/internship/${index}`}>
-              <button className="w-full bg-gradient-to-r from-green-500 to-green-700 text-white py-2 rounded-md text-sm font-semibold shadow-md hover:shadow-lg transition-all transform hover:scale-105 active:scale-95">
-                View Details
-              </button>
+      <div className="w-full xl:w-1/4 bg-white shadow-2xl rounded-2xl p-6 xl:h-screen xl:overflow-y-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-transparent">
+        <h3 className="text-2xl font-bold text-gray-700 mb-6">Other Internship Offers</h3>
+        <div className="flex xl:flex-col gap-4 overflow-x-auto xl:overflow-x-visible pb-4 xl:pb-0">
+          {internships.map((j, index) => (
+            <div key={index} className="bg-gradient-to-r from-gray-50 to-gray-100 p-4 rounded-lg shadow-lg min-w-[260px] xl:min-w-0 hover:scale-105 hover:shadow-xl transition-all transform">
+              <h4 className="text-lg font-semibold text-gray-800 mb-1">{j.title}</h4>
+              <p className="text-sm text-gray-600 mb-1">{j.company}</p>
+              <p className="text-xs flex items-center gap-2 text-gray-500 mb-1">
+                <FaMapMarkerAlt className="text-red-500" /> {j.location}
+              </p>
+              <p className="text-sm font-medium mb-4">
+                <FaRupeeSign className="inline text-green-600" /> {j.stipend}
+              </p>
+              <Link to={`/internship/${index}`}>
+                <button className="w-full bg-gradient-to-r from-green-500 to-green-700 text-white py-2 rounded-md text-sm font-semibold shadow-md hover:shadow-lg transition-all transform hover:scale-105 active:scale-95">
+                  View Details
+                </button>
+              </Link>
+            </div>
+          ))}
+        </div>
+
+        {internships.length > 2 && (
+          <div className="mt-4 xl:hidden">
+            <Link
+              to="/internships"
+              className="block text-center bg-gray-100 hover:bg-gray-200 text-gray-700 py-2 px-4 rounded-lg transition-colors"
+            >
+              View All Jobs
             </Link>
           </div>
-        ))}
+        )}
       </div>
     </div>
   );
