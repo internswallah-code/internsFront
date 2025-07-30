@@ -85,7 +85,7 @@ export default function InformationPage() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Page Title */}
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">Information About Internswallah</h1>
+          <h1 className="text-4xl font-bold text-gray-900 mb-4">Bulletin</h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
             Stay updated with the latest tech news, trending job opportunities, and industry insights. Your gateway to
             the most current information in the technology sector.

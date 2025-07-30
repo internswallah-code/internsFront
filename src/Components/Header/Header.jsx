@@ -260,7 +260,7 @@ export default function Header() {
                   } hover:text-blue-400 transition-colors`
                 }
               >
-                Information
+                Bulletin
               </NavLink>
               {user?.userType === "employer" && (
                 <NavLink
@@ -305,7 +305,7 @@ export default function Header() {
                         onClick={() => setDropdown("")}
                         className="px-4 py-2 hover:bg-gray-100 flex justify-center rounded-lg border-t-2"
                       >
-                        Employee Login
+                        Applicant Login
                       </Link>
                     </div>
                   )}
@@ -334,7 +334,7 @@ export default function Header() {
                         onClick={() => setDropdown("")}
                         className="px-4 py-2 hover:bg-gray-100 flex justify-center rounded-lg border-t-2"
                       >
-                        Employee Sign Up
+                        Applicant Sign Up
                       </Link>
                     </div>
                   )}

@@ -2,6 +2,7 @@ import { useState } from "react"
 import { motion } from "framer-motion"
 import DatePicker from "react-datepicker"
 import "react-datepicker/dist/react-datepicker.css"
+import bgImg from "./back.png"
 
 const TimePicker = ({ selectedDate, onDateChange, onTimeChange, onClose }) => {
   const [isHourView, setIsHourView] = useState(true)
@@ -139,7 +140,7 @@ export default function BookPage() {
       <div
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
         style={{
-          backgroundImage: "url('/images/back.png')",
+           backgroundImage: `url(${bgImg})`,
           backgroundAttachment: "scroll",
         }}
       />
