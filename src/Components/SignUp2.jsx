@@ -90,7 +90,7 @@ function SignUp2() {
           <div className="bg-gradient-to-r from-[#0a66c2] to-[#084a94] px-6 py-8 sm:px-8 lg:px-12">
             <div className="text-center">
               <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-3">
-                Sign up as an Employee
+                Sign up as an Applicant
               </h2>
               <p className="text-sm sm:text-base lg:text-lg text-blue-100 mb-4">
                 Join our platform and discover amazing opportunities
