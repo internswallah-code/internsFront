@@ -121,7 +121,7 @@ function Login() {
                                     {/* Header */}
                                     <div className="text-center">
                                         <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold leading-tight text-gray-900">
-                                            Sign In To Your Employer Account
+                                            Sign In To Your Applicant Account
                                         </h2>
                                         <p className="mt-3 text-sm sm:text-base text-gray-600">
                                             Don't have an account?{" "}
