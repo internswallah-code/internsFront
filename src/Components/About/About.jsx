@@ -187,7 +187,7 @@ const About = () => {
                 Whether you're exploring career paths, upskilling through
                 practical experience, or looking for emerging talent,
                 Internswallah provides the tools and connections you need to
-                thrive in today’s competitive landscape.
+                thrive in today's competitive landscape.
               </p>
             </div>
           </div>

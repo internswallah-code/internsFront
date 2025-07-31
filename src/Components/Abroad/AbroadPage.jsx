@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./abroad.css";
 
 const AbroadPage = () => {
@@ -14,12 +14,21 @@ const AbroadPage = () => {
     }, 3000);
   };
 
+  // Prevent background scroll when popup is open (bonus)
+  useEffect(() => {
+    if (showPopup) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+  }, [showPopup]);
+
   return (
     <div
       className="min-h-screen flex flex-col justify-center items-center bg-cover bg-center bg-no-repeat bg-fixed px-4 py-10 md:py-16 relative"
       style={{ backgroundImage: `url('/abroad-bg.jpg')` }}
     >
-      {/* Overlay for better text visibility */}
+      {/* Overlay */}
       <div className="absolute inset-0 bg-white/70 md:bg-white/60 backdrop-blur-sm z-0"></div>
 
       {/* Header */}
@@ -85,16 +94,24 @@ const AbroadPage = () => {
         </form>
       </div>
 
-      {/* Animated Popup */}
+      {/* Thank You Popup */}
       {showPopup && (
         <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
-          <div className="bg-white rounded-xl px-10 py-8 w-[90%] max-w-md shadow-xl transform transition-all duration-500 scale-100 opacity-100">
+          <div className="bg-white rounded-xl px-10 py-8 w-[90%] max-w-md shadow-xl transform transition-all duration-300 scale-100 opacity-100">
             <h2 className="text-2xl font-bold text-gray-800 text-center mb-4">
               🎓 Thank You!
             </h2>
-            <p className="text-gray-600 text-lg text-center">
+            <p className="text-gray-600 text-lg text-center mb-6">
               We've received your request. You'll hear from us shortly!
             </p>
+            <div className="flex justify-center">
+              <button
+                onClick={() => setShowPopup(false)}
+                className="px-4 py-2 bg-[#0a66c2] text-white rounded hover:bg-[#0a66c2]/90 transition"
+              >
+                OK
+              </button>
+            </div>
           </div>
         </div>
       )}

@@ -21,7 +21,9 @@ const TimePicker = ({ selectedDate, onDateChange, onTimeChange, onClose }) => {
       setIsHourView(false);
     } else {
       setSelectedMinute(value);
-      onTimeChange(`${formatNumber(selectedHour)}:${formatNumber(value)} ${period}`);
+      onTimeChange(
+        `${formatNumber(selectedHour)}:${formatNumber(value)} ${period}`
+      );
     }
   };
 
@@ -45,27 +47,35 @@ const TimePicker = ({ selectedDate, onDateChange, onTimeChange, onClose }) => {
             <div className="flex items-center justify-center gap-2 text-4xl font-light">
               <button
                 onClick={() => setIsHourView(true)}
-                className={`p-2 rounded ${isHourView ? "bg-[#0a66c2] text-white" : ""}`}
+                className={`p-2 rounded ${
+                  isHourView ? "bg-[#0a66c2] text-white" : ""
+                }`}
               >
                 {formatNumber(selectedHour)}
               </button>
               <span>:</span>
               <button
                 onClick={() => setIsHourView(false)}
-                className={`p-2 rounded ${!isHourView ? "bg-[#0a66c2] text-white" : ""}`}
+                className={`p-2 rounded ${
+                  !isHourView ? "bg-[#0a66c2] text-white" : ""
+                }`}
               >
                 {formatNumber(selectedMinute)}
               </button>
               <div className="flex flex-col gap-1 ml-2 text-sm">
                 <button
                   onClick={() => setPeriod("AM")}
-                  className={`px-2 py-1 rounded ${period === "AM" ? "bg-[#0a66c2] text-white" : "bg-gray-100"}`}
+                  className={`px-2 py-1 rounded ${
+                    period === "AM" ? "bg-[#0a66c2] text-white" : "bg-gray-100"
+                  }`}
                 >
                   AM
                 </button>
                 <button
                   onClick={() => setPeriod("PM")}
-                  className={`px-2 py-1 rounded ${period === "PM" ? "bg-[#0a66c2] text-white" : "bg-gray-100"}`}
+                  className={`px-2 py-1 rounded ${
+                    period === "PM" ? "bg-[#0a66c2] text-white" : "bg-gray-100"
+                  }`}
                 >
                   PM
                 </button>
@@ -88,7 +98,9 @@ const TimePicker = ({ selectedDate, onDateChange, onTimeChange, onClose }) => {
                     key={number}
                     onClick={() => handleTimeClick(number)}
                     className={`absolute w-10 h-10 -mt-5 -ml-5 rounded-full flex items-center justify-center ${
-                      isSelected ? "bg-[#0a66c2] text-white" : "hover:bg-gray-200"
+                      isSelected
+                        ? "bg-[#0a66c2] text-white"
+                        : "hover:bg-gray-200"
                     }`}
                     style={{ left: `${x}px`, top: `${y}px` }}
                   >
@@ -102,7 +114,11 @@ const TimePicker = ({ selectedDate, onDateChange, onTimeChange, onClose }) => {
                 style={{
                   height: "40%",
                   top: "10%",
-                  transform: `rotate(${(isHourView ? (selectedHour % 12) * 30 : selectedMinute * 6) - 90}deg)`,
+                  transform: `rotate(${
+                    (isHourView
+                      ? (selectedHour % 12) * 30
+                      : selectedMinute * 6) - 90
+                  }deg)`,
                 }}
               />
             </div>
@@ -110,10 +126,16 @@ const TimePicker = ({ selectedDate, onDateChange, onTimeChange, onClose }) => {
         )}
 
         <div className="flex justify-end gap-2 mt-4">
-          <button onClick={onClose} className="px-4 py-2 text-[#0a66c2] hover:bg-gray-100 rounded">
+          <button
+            onClick={onClose}
+            className="px-4 py-2 text-[#0a66c2] hover:bg-gray-100 rounded"
+          >
             CANCEL
           </button>
-          <button onClick={onClose} className="px-4 py-2 bg-[#0a66c2] hover:bg-[#0a66c2]/90 text-white rounded">
+          <button
+            onClick={onClose}
+            className="px-4 py-2 bg-[#0a66c2] hover:bg-[#0a66c2]/90 text-white rounded"
+          >
             OK
           </button>
         </div>
@@ -126,6 +148,7 @@ export default function BookPage() {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [selectedTime, setSelectedTime] = useState("");
+  const [showPopup, setShowPopup] = useState(false);
 
   const handleDateChange = (date) => {
     setSelectedDate(date);
@@ -147,10 +170,12 @@ export default function BookPage() {
           transition={{ duration: 0.8 }}
         >
           <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white">
-            Get Personalized <span className="text-[#0a66c2]">1:1</span> Mentorship From Industry Experts!
+            Get Personalized <span className="text-[#0a66c2]">1:1</span>{" "}
+            Mentorship From Industry Experts!
           </h1>
           <p className="text-white text-base md:text-xl mt-4">
-            Connect with experienced mentors who will guide you through your career.
+            Connect with experienced mentors who will guide you through your
+            career.
           </p>
         </motion.div>
 
@@ -160,10 +185,21 @@ export default function BookPage() {
           animate={{ scale: 1, opacity: 1 }}
           transition={{ duration: 0.5, ease: "easeOut" }}
         >
-          <p className="text-gray-700 font-medium mb-4">Tell us about your concerns</p>
-          <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
+          <p className="text-gray-700 font-medium mb-4">
+            Tell us about your concerns
+          </p>
+          <form
+            className="space-y-4"
+            onSubmit={(e) => {
+              e.preventDefault();
+              setShowPopup(true); // Show the Thank You popup
+            }}
+          >
             <div>
-              <label htmlFor="concerns" className="block text-sm font-medium text-gray-700">
+              <label
+                htmlFor="concerns"
+                className="block text-sm font-medium text-gray-700"
+              >
                 Mentorship Needs
               </label>
               <input
@@ -212,6 +248,23 @@ export default function BookPage() {
             >
               BOOK A SESSION
             </motion.button>
+            {showPopup && (
+              <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-center items-center">
+                <div className="bg-white p-6 rounded-lg shadow-lg text-center max-w-sm w-full">
+                  <div className="text-4xl mb-2">🎓</div>
+                  <h2 className="text-xl font-semibold mb-2">Thank You!</h2>
+                  <p className="text-gray-600 mb-4">
+                    We've received your request. You'll hear from us shortly!
+                  </p>
+                  <button
+                    onClick={() => setShowPopup(false)}
+                    className="px-4 py-2 bg-[#0a66c2] text-white rounded hover:bg-[#0a66c2]/90"
+                  >
+                    OK
+                  </button>
+                </div>
+              </div>
+            )}
           </form>
         </motion.div>
       </div>
