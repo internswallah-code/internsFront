@@ -2,7 +2,8 @@ const courses = [
   {
     id: 0,
     title: "Web Development",
-    company: "Internshala Trainings",
+    company: "Internswallah Trainings",
+    description: "Master HTML, CSS, JavaScript, and React to build modern, responsive websites from scratch.",
     location: "Online",
     duration: "6 Weeks",
     fees: 3499,
@@ -12,7 +13,8 @@ const courses = [
   {
     id: 1,
     title: "Data Science",
-    company: "Internshala Trainings",
+    company: "Internswallah Trainings",
+    description: "Learn Python, machine learning, and data visualization to extract insights from complex datasets.",
     location: "Online",
     duration: "8 Weeks",
     fees: 4499,
@@ -22,7 +24,8 @@ const courses = [
   {
     id: 2,
     title: "Python Programming",
-    company: "Internshala Trainings",
+    company: "Internswallah Trainings",
+    description: "Build a strong foundation in Python programming with hands-on projects and real-world applications.",
     location: "Online",
     duration: "6 Weeks",
     fees: 2999,
@@ -32,7 +35,8 @@ const courses = [
   {
     id: 3,
     title: "Digital Marketing",
-    company: "Internshala Trainings",
+    company: "Internswallah Trainings",
+    description: "Master SEO, social media marketing, and Google Ads to grow businesses in the digital age.",
     location: "Online",
     duration: "6 Weeks",
     fees: 3499,
@@ -42,7 +46,8 @@ const courses = [
   {
     id: 4,
     title: "Android App Development",
-    company: "Internshala Trainings",
+    company: "Internswallah Trainings",
+    description: "Create native Android applications using Java and Kotlin with industry-standard practices.",
     location: "Online",
     duration: "8 Weeks",
     fees: 4499,
@@ -52,7 +57,9 @@ const courses = [
   {
     id: 5,
     title: "UI/UX Design",
-    company: "Internshala Trainings",
+    company: "Internswallah Trainings",
+    description:
+      "Design intuitive user interfaces and experiences using Figma, Adobe XD, and design thinking principles.",
     location: "Online",
     duration: "6 Weeks",
     fees: 3799,
@@ -62,7 +69,8 @@ const courses = [
   {
     id: 6,
     title: "Ethical Hacking",
-    company: "Internshala Trainings",
+    company: "Internswallah Trainings",
+    description: "Learn cybersecurity fundamentals and penetration testing to protect systems from security threats.",
     location: "Online",
     duration: "8 Weeks",
     fees: 4999,
@@ -72,13 +80,14 @@ const courses = [
   {
     id: 7,
     title: "AutoCAD for Engineers",
-    company: "Internshala Trainings",
+    company: "Internswallah Trainings",
+    description: "Master 2D and 3D technical drawing and design using AutoCAD for engineering applications.",
     location: "Online",
     duration: "6 Weeks",
     fees: 3299,
     posted: "6 days",
     type: "Industry Oriented",
   },
-];
+]
 
-export default courses;
+export default courses
