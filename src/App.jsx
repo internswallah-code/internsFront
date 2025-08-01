@@ -5,6 +5,8 @@ import { useDispatch } from 'react-redux'
 import { login, logout } from './store/authSlice'
 import { UserDataContext } from './Components/Context/UserContext'
 import axios from 'axios'
+import ScrollToTop from "./Components/ScrollToTop.jsx"; 
+
 
 const App = () => {
   const [loading, setLoading] = useState(true)
@@ -59,6 +61,7 @@ const App = () => {
     <UserDataContext.Provider value={{ user, setUser }}>
       <div className="min-h-screen flex flex-wrap content-between">
         <div className="w-full block">
+          <ScrollToTop />
           <Header />
           <main>
             <Outlet />

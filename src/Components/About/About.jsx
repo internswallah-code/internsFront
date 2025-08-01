@@ -17,7 +17,9 @@ const About = () => {
           setLoading(false);
           return;
         }
-      } catch {}
+      } catch (err) {
+          console.error("Employer fetch failed:", err.response?.data || err.message);
+      }
 
       try {
         // Then try employee endpoint
@@ -29,7 +31,9 @@ const About = () => {
           setLoading(false);
           return;
         }
-      } catch {}
+      } catch (err) {
+         console.error("Employee fetch failed:", err.response?.data || err.message);
+      }
 
       setUserType("guest");
       setLoading(false);
