@@ -11,8 +11,8 @@ const TimePicker = ({ selectedDate, onDateChange, onTimeChange, onClose }) => {
   const [period, setPeriod] = useState("AM");
   const [showClock, setShowClock] = useState(false);
 
-  const hours = Array.from({ length: 12 }, (_, i) => i + 1);
-  const minutes = Array.from({ length: 12 }, (_, i) => i * 5);
+  const hours = [12, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
+  const minutes = [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55];
 
   const formatNumber = (num) => num.toString().padStart(2, "0");
 
@@ -22,9 +22,6 @@ const TimePicker = ({ selectedDate, onDateChange, onTimeChange, onClose }) => {
       setIsHourView(false);
     } else {
       setSelectedMinute(value);
-      onTimeChange(
-        `${formatNumber(selectedHour)}:${formatNumber(value)} ${period}`
-      );
     }
   };
 
@@ -47,6 +44,7 @@ const TimePicker = ({ selectedDate, onDateChange, onTimeChange, onClose }) => {
             <div className="flex items-center justify-center gap-2 text-3xl font-light">
               <button
                 onClick={() => setIsHourView(true)}
+                type="button"
                 className={`p-2 rounded ${
                   isHourView ? "bg-[#0a66c2] text-white" : ""
                 }`}
@@ -56,6 +54,7 @@ const TimePicker = ({ selectedDate, onDateChange, onTimeChange, onClose }) => {
               <span>:</span>
               <button
                 onClick={() => setIsHourView(false)}
+                type="button"
                 className={`p-2 rounded ${
                   !isHourView ? "bg-[#0a66c2] text-white" : ""
                 }`}
@@ -65,6 +64,7 @@ const TimePicker = ({ selectedDate, onDateChange, onTimeChange, onClose }) => {
               <div className="flex flex-col gap-1 ml-2 text-sm">
                 <button
                   onClick={() => setPeriod("AM")}
+                  type="button"
                   className={`px-2 py-1 rounded ${
                     period === "AM" ? "bg-[#0a66c2] text-white" : "bg-gray-100"
                   }`}
@@ -73,6 +73,7 @@ const TimePicker = ({ selectedDate, onDateChange, onTimeChange, onClose }) => {
                 </button>
                 <button
                   onClick={() => setPeriod("PM")}
+                  type="button"
                   className={`px-2 py-1 rounded ${
                     period === "PM" ? "bg-[#0a66c2] text-white" : "bg-gray-100"
                   }`}
@@ -95,6 +96,7 @@ const TimePicker = ({ selectedDate, onDateChange, onTimeChange, onClose }) => {
                   <button
                     key={number}
                     onClick={() => handleTimeClick(number)}
+                    type="button"
                     className={`absolute w-10 h-10 -mt-5 -ml-5 rounded-full flex items-center justify-center text-sm ${
                       isSelected
                         ? "bg-[#0a66c2] text-white"
@@ -106,16 +108,23 @@ const TimePicker = ({ selectedDate, onDateChange, onTimeChange, onClose }) => {
                   </button>
                 );
               })}
+              {/* hour hand */}
+              <div
+                className="absolute w-1 bg-[#0a66c2] origin-bottom rounded-full left-1/2 -translate-x-1/2"
+                style={{
+                  height: "30%",
+                  top: "20%",
+                  transform: `rotate(${(selectedHour % 12) * 30}deg)`,
+                }}
+              />
+
+              {/* minute hand */}
               <div
                 className="absolute w-1 bg-[#0a66c2] origin-bottom rounded-full left-1/2 -translate-x-1/2"
                 style={{
                   height: "40%",
                   top: "10%",
-                  transform: `rotate(${
-                    (isHourView
-                      ? (selectedHour % 12) * 30
-                      : selectedMinute * 6) - 90
-                  }deg)`,
+                  transform: `rotate(${selectedMinute * 6}deg)`,
                 }}
               />
             </div>
@@ -125,12 +134,20 @@ const TimePicker = ({ selectedDate, onDateChange, onTimeChange, onClose }) => {
         <div className="flex justify-end gap-2 mt-4">
           <button
             onClick={onClose}
+            type="button"
             className="px-4 py-2 text-[#0a66c2] hover:bg-gray-100 rounded"
           >
             CANCEL
           </button>
           <button
-            onClick={onClose}
+            onClick={() => {
+              onTimeChange(
+                `${formatNumber(selectedHour)}:${formatNumber(
+                  selectedMinute
+                )} ${period}`
+              );
+            }}
+            type="button"
             className="px-4 py-2 bg-[#0a66c2] hover:bg-[#0a66c2]/90 text-white rounded"
           >
             OK
@@ -146,6 +163,7 @@ export default function BookPage() {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [selectedTime, setSelectedTime] = useState("");
   const [showPopup, setShowPopup] = useState(false);
+  const [concerns, setConcerns] = useState("");
 
   const handleDateChange = (date) => {
     setSelectedDate(date);
@@ -196,9 +214,42 @@ export default function BookPage() {
         >
           <form
             className="space-y-4"
-            onSubmit={(e) => {
+            onSubmit={async (e) => {
               e.preventDefault();
-              setShowPopup(true); // Show the Thank You popup
+
+              // ✅ validations (optional but recommended)
+              if (!concerns.trim()) return alert("Enter your discussion topic");
+              if (!selectedTime) return alert("Select date & time");
+
+              const payload = {
+                concerns,
+                selectedDate: selectedDate.toDateString(), // ✅ same format you tested in Postman
+                selectedTime,
+              };
+
+              try {
+                const res = await fetch(
+                  `${import.meta.env.VITE_BACKEND_URL}/api/bookings`,
+                  {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(payload),
+                  }
+                );
+
+                const data = await res.json();
+
+                if (!res.ok) {
+                  alert(data.message || "Booking failed");
+                  return;
+                }
+
+                console.log("Saved:", data);
+                setShowPopup(true); // ✅ keep your popup working
+              } catch (err) {
+                console.log(err);
+                alert("Server not reachable");
+              }
             }}
           >
             {" "}
@@ -212,6 +263,8 @@ export default function BookPage() {
               <input
                 id="concerns"
                 type="text"
+                value={concerns}
+                onChange={(e) => setConcerns(e.target.value)}
                 className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-[#0a66c2] focus:border-[#0a66c2]"
                 placeholder="E.g., career doubts, resume help..."
               />
