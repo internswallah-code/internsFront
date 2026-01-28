@@ -146,8 +146,8 @@ const TimePicker = ({ selectedDate, onDateChange, onTimeChange, onClose }) => {
             onClick={() => {
               onTimeChange(
                 `${formatNumber(selectedHour)}:${formatNumber(
-                  selectedMinute
-                )} ${period}`
+                  selectedMinute,
+                )} ${period}`,
               );
             }}
             type="button"
@@ -224,12 +224,12 @@ export default function BookPage() {
 
               try {
                 const res = await fetch(
-                  `${import.meta.env.VITE_BACKEND_URL}/api/mentorship`,
+                  `${import.meta.env.VITE_BASE_URL}/api/mentorship`,
                   {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(payload),
-                  }
+                  },
                 );
 
                 const data = await res.json();

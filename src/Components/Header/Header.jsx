@@ -78,8 +78,8 @@ export default function Header() {
       }
     };
 
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   // Determine profile link based on user type/role
@@ -100,6 +100,7 @@ export default function Header() {
               <img
                 src={Logo}
                 alt="Logo"
+                loading="lazy"
                 className="w-full h-auto object-contain transition-transform duration-200 hover:scale-125"
               />
             </div>
@@ -539,7 +540,9 @@ export default function Header() {
               {!authStatus ? (
                 <>
                   <div className="space-y-1">
-                    <div className="px-3 py-1 text-sm font-medium text-gray-500">Login</div>
+                    <div className="px-3 py-1 text-sm font-medium text-gray-500">
+                      Login
+                    </div>
                     <Link
                       to="/login"
                       onClick={() => setMobileMenuOpen(false)}
@@ -556,7 +559,9 @@ export default function Header() {
                     </Link>
                   </div>
                   <div className="space-y-1 border-t pt-2">
-                    <div className="px-3 py-1 text-sm font-medium text-gray-500">Sign Up</div>
+                    <div className="px-3 py-1 text-sm font-medium text-gray-500">
+                      Sign Up
+                    </div>
                     <Link
                       to="/signup"
                       onClick={() => setMobileMenuOpen(false)}
