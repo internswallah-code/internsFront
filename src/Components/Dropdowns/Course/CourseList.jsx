@@ -1,20 +1,33 @@
-import { Link } from "react-router-dom"
-import { FaMapMarkerAlt, FaRegClock, FaRupeeSign, FaRocket } from "react-icons/fa"
-import courses from "./Course_data"
+import { Link } from "react-router-dom";
+import {
+  FaMapMarkerAlt,
+  FaRegClock,
+  FaRupeeSign,
+  FaRocket,
+} from "react-icons/fa";
+import courses from "./Course_data";
 
 const CourseList = () => {
   return (
     <div className="min-h-screen bg-gradient-to-r from-gray-50 to-gray-100 p-8">
       <div className="max-w-4xl mx-auto">
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-gray-800 mb-4">Available Courses</h1>
-          <p className="text-lg text-gray-600">Explore and enhance your skills with these curated courses</p>
+          <h1 className="text-4xl font-bold text-gray-800 mb-4">
+            Available Courses
+          </h1>
+          <p className="text-lg text-gray-600">
+            Explore and enhance your skills with these curated courses
+          </p>
         </div>
 
         {courses.length === 0 ? (
           <div className="text-center py-12">
-            <h2 className="text-2xl text-gray-500">No courses available at the moment</h2>
-            <p className="text-gray-400 mt-2">Please check back later for new opportunities</p>
+            <h2 className="text-2xl text-gray-500">
+              No courses available at the moment
+            </h2>
+            <p className="text-gray-400 mt-2">
+              Please check back later for new opportunities
+            </p>
           </div>
         ) : (
           <div className="space-y-6">
@@ -29,17 +42,25 @@ const CourseList = () => {
                     {/* Header */}
                     <div className="flex items-center mb-4">
                       <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-blue-700 flex items-center justify-center rounded-full shadow-md mr-4 flex-shrink-0">
-                        <span className="text-white text-lg font-bold">{course.company[0]}</span>
+                        <span className="text-white text-lg font-bold">
+                          {course.company[0]}
+                        </span>
                       </div>
                       <div className="min-w-0">
-                        <h3 className="text-2xl font-bold text-gray-800 mb-1">{course.title}</h3>
-                        <p className="text-blue-600 font-semibold">{course.company}</p>
+                        <h3 className="text-2xl font-bold text-gray-800 mb-1">
+                          {course.title}
+                        </h3>
+                        <p className="text-blue-600 font-semibold">
+                          {course.company}
+                        </p>
                       </div>
                     </div>
 
                     {/* Description */}
                     <div className="mb-6">
-                      <p className="text-gray-700 text-base leading-relaxed font-medium">{course.description}</p>
+                      <p className="text-gray-700 text-base leading-relaxed font-medium">
+                        {course.description}
+                      </p>
                     </div>
 
                     {/* Details */}
@@ -78,7 +99,7 @@ const CourseList = () => {
         )}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default CourseList
+export default CourseList;
