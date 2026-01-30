@@ -1,59 +1,65 @@
-import { useState, useEffect } from "react"
-import { Link } from "react-router-dom"
-import { FaMapMarkerAlt, FaRupeeSign, FaCalendarAlt, FaLaptop, FaClock } from "react-icons/fa"
+import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import {
+  FaMapMarkerAlt,
+  FaRupeeSign,
+  FaCalendarAlt,
+  FaLaptop,
+  FaClock,
+} from "react-icons/fa";
 
 const JobsList = () => {
-  const [jobs, setJobs] = useState([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(null)
+  const [jobs, setJobs] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchJobs = async () => {
       try {
-        setLoading(true)
+        setLoading(true);
         const response = await fetch(`${import.meta.env.VITE_BASE_URL}/jobs`, {
           credentials: "include",
-        })
-        
-        if (!response.ok) {
-          throw new Error("Failed to fetch jobs")
-        }
-        
-        const jobsData = await response.json()
-        setJobs(jobsData)
-      } catch (err) {
-        setError(err.message)
-      } finally {
-        setLoading(false)
-      }
-    }
+        });
 
-    fetchJobs()
-  }, [])
+        if (!response.ok) {
+          throw new Error("Failed to fetch jobs");
+        }
+
+        const jobsData = await response.json();
+        setJobs(jobsData);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchJobs();
+  }, []);
 
   // Format posted date
   const formatPostedDate = (dateString) => {
     try {
-      const date = new Date(dateString)
-      const now = new Date()
-      const diffTime = Math.abs(now - date)
-      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
-      
-      if (diffDays === 1) return "1 day ago"
-      if (diffDays < 7) return `${diffDays} days ago`
-      if (diffDays < 30) return `${Math.ceil(diffDays / 7)} weeks ago`
-      return `${Math.ceil(diffDays / 30)} months ago`
+      const date = new Date(dateString);
+      const now = new Date();
+      const diffTime = Math.abs(now - date);
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+      if (diffDays === 1) return "1 day ago";
+      if (diffDays < 7) return `${diffDays} days ago`;
+      if (diffDays < 30) return `${Math.ceil(diffDays / 7)} weeks ago`;
+      return `${Math.ceil(diffDays / 30)} months ago`;
     } catch {
-      return "Recently posted"
+      return "Recently posted";
     }
-  }
+  };
 
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <div className="text-2xl text-blue-600">Loading jobs...</div>
       </div>
-    )
+    );
   }
 
   if (error) {
@@ -61,28 +67,38 @@ const JobsList = () => {
       <div className="flex items-center justify-center min-h-screen">
         <div className="text-2xl text-red-500">Error: {error}</div>
       </div>
-    )
+    );
   }
 
   return (
     <div className="min-h-screen bg-gradient-to-r from-gray-50 to-gray-100 p-8">
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-gray-800 mb-4">Available Jobs</h1>
-          <p className="text-lg text-gray-600">Find your dream job from our latest postings</p>
+          <h1 className="text-4xl font-bold text-gray-800 mb-4">
+            Available Jobs
+          </h1>
+          <p className="text-lg text-gray-600">
+            Find your dream job from our latest postings
+          </p>
         </div>
 
         {jobs.length === 0 ? (
           <div className="text-center py-12">
-            <h2 className="text-2xl text-gray-500">No jobs available at the moment</h2>
-            <p className="text-gray-400 mt-2">Please check back later for new opportunities</p>
+            <h2 className="text-2xl text-gray-500">
+              No jobs available at the moment
+            </h2>
+            <p className="text-gray-400 mt-2">
+              Please check back later for new opportunities
+            </p>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {jobs.map((job) => {
-              const isRemote = job.jobType?.toLowerCase().includes('remote')
-              const isPartTime = job.jobType?.toLowerCase().includes('part-time')
-              
+              const isRemote = job.jobType?.toLowerCase().includes("remote");
+              const isPartTime = job.jobType
+                ?.toLowerCase()
+                .includes("part-time");
+
               return (
                 <div
                   key={job._id}
@@ -91,11 +107,17 @@ const JobsList = () => {
                   {/* Company Header */}
                   <div className="flex items-center mb-4">
                     <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-blue-700 flex items-center justify-center rounded-full shadow-md mr-4">
-                      <span className="text-white text-lg font-bold">{job.company[0]}</span>
+                      <span className="text-white text-lg font-bold">
+                        {job.company[0]}
+                      </span>
                     </div>
                     <div>
-                      <h3 className="text-xl font-bold text-gray-800">{job.jobTitle}</h3>
-                      <p className="text-blue-600 font-semibold">{job.company}</p>
+                      <h3 className="text-xl font-bold text-gray-800">
+                        {job.jobTitle}
+                      </h3>
+                      <p className="text-blue-600 font-semibold">
+                        {job.company}
+                      </p>
                     </div>
                   </div>
 
@@ -135,14 +157,15 @@ const JobsList = () => {
                   {/* Skills */}
                   <div className="mb-4">
                     <div className="flex flex-wrap gap-1">
-                      {job.skills && job.skills.slice(0, 3).map((skill, index) => (
-                        <span
-                          key={index}
-                          className="bg-gray-100 text-gray-700 text-xs px-2 py-1 rounded"
-                        >
-                          {skill}
-                        </span>
-                      ))}
+                      {job.skills &&
+                        job.skills.slice(0, 3).map((skill, index) => (
+                          <span
+                            key={index}
+                            className="bg-gray-100 text-gray-700 text-xs px-2 py-1 rounded"
+                          >
+                            {skill}
+                          </span>
+                        ))}
                       {job.skills && job.skills.length > 3 && (
                         <span className="bg-gray-100 text-gray-700 text-xs px-2 py-1 rounded">
                           +{job.skills.length - 3} more
@@ -158,13 +181,13 @@ const JobsList = () => {
                     </button>
                   </Link>
                 </div>
-              )
+              );
             })}
           </div>
         )}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default JobsList
+export default JobsList;
