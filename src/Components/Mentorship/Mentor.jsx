@@ -224,15 +224,16 @@ export default function BookPage() {
 
               try {
                 const res = await fetch(
-                  `${import.meta.env.VITE_BACKEND_URL}/api/mentorship`,
+                  `${import.meta.env.VITE_BASE_URL}/api/mentorship`,
                   {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(payload),
                   }
                 );
-
+                console.log("Response Status:", res.status); // ✅ log status code
                 const data = await res.json();
+                console.log("Response Data:", data); // ✅ log response data
 
                 if (!res.ok) {
                   alert(data.message || "Mentorship booking failed");

@@ -28,7 +28,6 @@ import {
   MentorPage, 
   BookPage, 
   PerformanceTracker,
-  PrivacyPage,
   JobsList
 } from "./Components/index.js";
 import Login2 from "./Components/Login2.jsx";
@@ -68,7 +67,7 @@ const router = createBrowserRouter([
       { path: "mentor", element: <MentorPage /> },
       { path: "book", element: <BookPage /> },
       { path: "performance", element: <PerformanceTracker /> },
-      { path: "privacy", element: <PrivacyPage /> },
+      // { path: "privacy", element: <PrivacyPage /> },
     ]
   }
 ]);

@@ -229,7 +229,7 @@ export default function BookPage() {
 
               try {
                 const res = await fetch(
-                  `${import.meta.env.VITE_BACKEND_URL}/api/bookings`,
+                  `${import.meta.env.VITE_BASE_URL}/api/bookings`,
                   {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
