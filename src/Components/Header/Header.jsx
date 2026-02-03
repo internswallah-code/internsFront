@@ -263,7 +263,7 @@ export default function Header() {
               >
                 Bulletin
               </NavLink>
-              {user?.userType === "employer" && (
+              {/* {user?.userType === "employer" && (
                 <NavLink
                   to="/job-post"
                   className={({ isActive }) =>
@@ -274,13 +274,13 @@ export default function Header() {
                 >
                   Job Post
                 </NavLink>
-              )}
+              )} */}
             </div>
           </div>
 
           {/* Desktop Auth Section */}
           <div className="hidden lg:flex items-center space-x-4">
-            {!authStatus ? (
+            {!user ? (
               <>
                 <div className="relative">
                   <button
@@ -380,6 +380,15 @@ export default function Header() {
                           Performance Tracker
                         </Link>
                       )}
+                      {user?.userType === "employer" && (
+                        <Link
+                          to="/job-post"
+                          className="px-3 py-1.5 hover:bg-gray-100 rounded-lg border-b"
+                          onClick={() => setDropdown("")}
+                        >
+                          Job Post
+                        </Link>
+                      )}
                       <Link
                         to="/privacy"
                         className="px-3 py-1.5 hover:bg-gray-100 rounded-lg border-t-2"
@@ -393,6 +402,13 @@ export default function Header() {
                         onClick={() => setDropdown("")}
                       >
                         Contact Us
+                      </Link>
+                      <Link
+                        to="/setting"
+                        className="px-3 py-1.5 hover:bg-gray-100 rounded-lg border-t-2"
+                        onClick={() => setDropdown("")}
+                      >
+                        Settings
                       </Link>
                       <button
                         onClick={logoutHandler}

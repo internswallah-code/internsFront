@@ -9,45 +9,7 @@ import ScrollToTop from "./Components/ScrollToTop.jsx";
 
 const App = () => {
   const [loading, setLoading] = useState(true);
-  const [user, setUser] = useState(null);
   const dispatch = useDispatch();
-
-  // useEffect(() => {
-  //   async function fetchUser() {
-  //     try {
-  //       let res = await axios.get(`${import.meta.env.VITE_BASE_URL}/me`, {
-  //         withCredentials: true,
-  //       });
-  //       if (res.data && res.data.fullName) {
-  //         const userData = { ...res.data, userType: "employer" };
-  //         dispatch(login({ userData }));
-  //         setUser(userData); // ✅ fix here
-  //         setLoading(false);
-  //         return;
-  //       }
-  //     } catch {}
-
-  //     try {
-  //       let res = await axios.get(
-  //         `${import.meta.env.VITE_BASE_URL}/employee-profile`,
-  //         { withCredentials: true },
-  //       );
-  //       if (res.data && res.data.fullName) {
-  //         const userData = { ...res.data, userType: "employee" };
-  //         dispatch(login({ userData }));
-  //         setUser(userData); // ✅ fix here
-  //         setLoading(false);
-  //         return;
-  //       }
-  //     } catch {}
-
-  //     dispatch(logout());
-  //     setUser(null); // ✅ also ensure this
-  //     setLoading(false);
-  //   }
-
-  //   fetchUser();
-  // }, [dispatch]);
 
   useEffect(() => {
     const restoreSession = async () => {
@@ -56,23 +18,22 @@ const App = () => {
           withCredentials: true,
         });
 
-        // ✅ STRICT CHECK (prevents ghost login)
+        // ✅ strict validation
         if (!res.data?.user || !res.data?.userType) {
           throw new Error("Invalid session");
         }
 
         dispatch(
           login({
-            userData: res.data.user,
-            userType: res.data.userType,
+            userData: {
+              ...res.data.user,
+              userType: res.data.userType,
+            },
           }),
         );
-
-        setUser(res.data.user);
       } catch (err) {
-        // ✅ NOT LOGGED IN IS NORMAL
+        // normal when not logged in
         dispatch(logout());
-        setUser(null);
       } finally {
         setLoading(false);
       }
@@ -93,18 +54,18 @@ const App = () => {
   }
 
   return (
-    <UserDataContext.Provider value={{ user, setUser }}>
-      <div className="min-h-screen flex flex-wrap content-between">
-        <div className="w-full block">
-          <ScrollToTop />
-          <Header />
-          <main>
-            <Outlet />
-          </main>
-          <Footer />
-        </div>
+    // <UserDataContext.Provider value={{ user, setUser }}>
+    <div className="min-h-screen flex flex-wrap content-between">
+      <div className="w-full block">
+        <ScrollToTop />
+        <Header />
+        <main>
+          <Outlet />
+        </main>
+        <Footer />
       </div>
-    </UserDataContext.Provider>
+    </div>
+    // </UserDataContext.Provider>
   );
 };
 
