@@ -3,28 +3,26 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { CheckCircle, XCircle, X } from "lucide-react";
 
-function JobPost() {
+function CoursePost() {
   const {
     register,
     handleSubmit,
-    setValue,
     formState: { errors },
   } = useForm({
     defaultValues: {
-      jobTitle: "",
-      skills: "",
+      title: "",
+      company: "",
+      description: "",
+      location: "",
+      duration: "",
+      fees: "",
+      type: "",
     },
   });
+
   const navigate = useNavigate();
 
-  const [customSkills, setCustomSkills] = useState("");
   const [modal, setModal] = useState({ show: false, type: "", message: "" });
-
-  const onCustomSkillChange = (e) => {
-    const value = e.target.value;
-    setCustomSkills(value);
-    setValue("skills", value);
-  };
 
   const showModal = (type, message) => {
     setModal({ show: true, type, message });
@@ -33,26 +31,30 @@ function JobPost() {
   const closeModal = () => {
     setModal({ show: false, type: "", message: "" });
     if (modal.type === "success") {
-      navigate("/jobs"); // Redirect only on success
+      navigate("/courses");
     }
   };
 
   const onSubmit = async (data) => {
     try {
-      const response = await fetch(`${import.meta.env.VITE_BASE_URL}/jobs`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
+      const response = await fetch(
+        `${import.meta.env.VITE_BASE_URL}/api/courses`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify(data),
         },
-        credentials: "include", // for setting cookies
-        body: JSON.stringify(data),
-      });
+      );
 
       const result = await response.json();
+
       if (response.ok) {
-        showModal("success", "Job posted successfully!");
+        showModal("success", "Course posted successfully!");
       } else {
-        showModal("error", `Failed to post job: ${result.message}`);
+        showModal("error", `Failed to post course: ${result.message}`);
       }
     } catch (err) {
       showModal("error", `Error: ${err.message}`);
@@ -63,7 +65,9 @@ function JobPost() {
     <div className="relative flex items-center justify-center min-h-screen bg-[#0a66c2]">
       <div className="w-full max-w-4xl bg-white rounded-lg shadow-lg">
         <div className="p-8">
-          <h2 className="text-2xl font-bold text-center mb-6">Post a Job</h2>
+          <h2 className="text-2xl font-bold text-center mb-6">
+            List your Course
+          </h2>
 
           <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
             <div className="mb-4">
@@ -73,6 +77,7 @@ function JobPost() {
               >
                 Company Name
               </label>
+
               <input
                 id="company"
                 className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-600"
@@ -81,6 +86,7 @@ function JobPost() {
                   required: "Company name is required.",
                 })}
               />
+
               {errors.company && (
                 <p className="text-red-500 text-sm">{errors.company.message}</p>
               )}
@@ -88,46 +94,23 @@ function JobPost() {
 
             <div className="mb-4">
               <label
-                htmlFor="jobTitle"
+                htmlFor="title"
                 className="block font-bold text-gray-700 mb-1"
               >
-                Job Title
+                Course Title
               </label>
+
               <input
-                id="jobTitle"
+                id="title"
                 className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-600"
-                placeholder="Enter Job Title"
-                {...register("jobTitle", {
-                  required: "Job title is required.",
+                placeholder="Enter Course Title"
+                {...register("title", {
+                  required: "Course title is required.",
                 })}
               />
-              {errors.jobTitle && (
-                <p className="text-red-500 text-sm">
-                  {errors.jobTitle.message}
-                </p>
-              )}
-            </div>
 
-            <div className="mb-4">
-              <label
-                htmlFor="customSkills"
-                className="block font-bold text-gray-700 mb-1"
-              >
-                Enter Required Skills (comma separated)
-              </label>
-              <input
-                id="customSkills"
-                className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-600 mt-2"
-                placeholder="e.g. Python, Django, REST API"
-                value={customSkills}
-                onChange={onCustomSkillChange}
-              />
-              <input
-                type="hidden"
-                {...register("skills", { required: "Skills are required." })}
-              />
-              {errors.skills && (
-                <p className="text-red-500 text-sm">{errors.skills.message}</p>
+              {errors.title && (
+                <p className="text-red-500 text-sm">{errors.title.message}</p>
               )}
             </div>
 
@@ -138,12 +121,14 @@ function JobPost() {
               >
                 Location
               </label>
+
               <input
                 id="location"
                 className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-600"
                 placeholder="Enter Location"
                 {...register("location", { required: "Location is required." })}
               />
+
               {errors.location && (
                 <p className="text-red-500 text-sm">
                   {errors.location.message}
@@ -153,81 +138,75 @@ function JobPost() {
 
             <div className="mb-4">
               <label
-                htmlFor="salary"
+                htmlFor="fees"
                 className="block font-bold text-gray-700 mb-1"
               >
-                Salary
+                Course Fees
               </label>
+
               <input
-                id="salary"
+                id="fees"
+                type="number"
                 className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-600"
-                placeholder="Enter Salary"
-                {...register("salary", { required: "Salary is required." })}
+                placeholder="Enter Course Fees"
+                {...register("fees", { required: "Fees are required." })}
               />
-              {errors.salary && (
-                <p className="text-red-500 text-sm">{errors.salary.message}</p>
+
+              {errors.fees && (
+                <p className="text-red-500 text-sm">{errors.fees.message}</p>
               )}
             </div>
 
             <div className="mb-4">
               <label
-                htmlFor="experience"
+                htmlFor="duration"
                 className="block font-bold text-gray-700 mb-1"
               >
-                Experience
+                Course Duration
               </label>
+
               <input
-                id="experience"
+                id="duration"
                 className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-600"
-                placeholder="Enter Experience (e.g. 2-4 years)"
-                {...register("experience", {
-                  required: "Experience is required.",
+                placeholder="Enter Duration (e.g. 6 weeks, 3 months)"
+                {...register("duration", {
+                  required: "Course duration is required.",
                 })}
               />
-              {errors.experience && (
+
+              {errors.duration && (
                 <p className="text-red-500 text-sm">
-                  {errors.experience.message}
+                  {errors.duration.message}
                 </p>
               )}
             </div>
 
             <div className="mb-4">
               <label
-                htmlFor="jobType"
+                htmlFor="type"
                 className="block font-bold text-gray-700 mb-1"
               >
-                Job Type
+                Course Type
               </label>
-              <input
-                id="jobType"
-                className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-600"
-                placeholder="e.g. Full-Time, Part-Time, Remote"
-                {...register("jobType", { required: "Job type is required." })}
-              />
-              {errors.jobType && (
-                <p className="text-red-500 text-sm">{errors.jobType.message}</p>
-              )}
-            </div>
 
-            <div className="mb-4">
-              <label
-                htmlFor="postedOn"
-                className="block font-bold text-gray-700 mb-1"
+              <select
+                id="type"
+                className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-600 bg-white"
+                {...register("type", { required: "Course type is required." })}
+                defaultValue=""
               >
-                Posted On
-              </label>
-              <input
-                id="postedOn"
-                className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-600"
-                type="date"
-                {...register("postedOn", {
-                  required: "Posting date is required.",
-                })}
-              />
-              {errors.postedOn && (
-                <p className="text-red-500 text-sm">
-                  {errors.postedOn.message}
-                </p>
+                <option value="" disabled>
+                  Select course type
+                </option>
+                <option value="Beginner Friendly">Beginner Friendly</option>
+                <option value="Certificate Course">Certificate Course</option>
+                <option value="Project Based">Project Based</option>
+                <option value="Advanced">Advanced</option>\
+                <option value="Industry Oriented">Industry Oriented</option>
+              </select>
+
+              {errors.type && (
+                <p className="text-red-500 text-sm">{errors.type.message}</p>
               )}
             </div>
 
@@ -236,17 +215,19 @@ function JobPost() {
                 htmlFor="description"
                 className="block font-bold text-gray-700 mb-1"
               >
-                Job Description
+                Course Description
               </label>
+
               <textarea
                 id="description"
                 className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-600"
                 rows={5}
-                placeholder="Enter detailed job description"
+                placeholder="Enter detailed course description"
                 {...register("description", {
-                  required: "Job description is required.",
+                  required: "Course description is required.",
                 })}
               ></textarea>
+
               {errors.description && (
                 <p className="text-red-500 text-sm">
                   {errors.description.message}
@@ -258,7 +239,7 @@ function JobPost() {
               type="submit"
               className="w-full bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
             >
-              Post Job
+              List Course
             </button>
           </form>
         </div>
@@ -312,4 +293,4 @@ function JobPost() {
   );
 }
 
-export default JobPost;
+export default CoursePost;

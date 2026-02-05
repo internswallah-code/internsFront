@@ -365,7 +365,7 @@ export default function Header() {
                       {profileLink && (
                         <Link
                           to={profileLink}
-                          className="px-3 py-1.5 hover:bg-gray-100 rounded-lg border-b"
+                          className="px-3 py-1.5 hover:bg-gray-100 rounded-lg border-t-2"
                           onClick={() => setDropdown("")}
                         >
                           Profile
@@ -383,10 +383,28 @@ export default function Header() {
                       {user?.userType === "employer" && (
                         <Link
                           to="/job-post"
-                          className="px-3 py-1.5 hover:bg-gray-100 rounded-lg border-b"
+                          className="px-3 py-1.5 hover:bg-gray-100 rounded-lg border-t-2"
                           onClick={() => setDropdown("")}
                         >
-                          Job Post
+                          Post Job
+                        </Link>
+                      )}
+                      {user?.userType === "employer" && (
+                        <Link
+                          to="/course-post"
+                          className="px-3 py-1.5 hover:bg-gray-100 rounded-lg border-t-2"
+                          onClick={() => setDropdown("")}
+                        >
+                          Post Course
+                        </Link>
+                      )}
+                      {user?.userType === "employer" && (
+                        <Link
+                          to="/internship-post"
+                          className="px-3 py-1.5 hover:bg-gray-100 rounded-lg border-t-2"
+                          onClick={() => setDropdown("")}
+                        >
+                          Post Internship
                         </Link>
                       )}
                       <Link
