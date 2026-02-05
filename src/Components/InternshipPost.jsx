@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { CheckCircle, XCircle, X } from "lucide-react";
 
-function JobPost() {
+function InternshipPost() {
   const {
     register,
     handleSubmit,
@@ -11,10 +11,13 @@ function JobPost() {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      jobTitle: "",
-      skills: "",
+      internshipTitle: "",
+      skills: [],
+      isRemote: false,
+      isPartTime: false,
     },
   });
+
   const navigate = useNavigate();
 
   const [customSkills, setCustomSkills] = useState("");
@@ -23,7 +26,14 @@ function JobPost() {
   const onCustomSkillChange = (e) => {
     const value = e.target.value;
     setCustomSkills(value);
-    setValue("skills", value);
+
+    // convert comma separated → array
+    const skillsArray = value
+      .split(",")
+      .map((s) => s.trim())
+      .filter(Boolean);
+
+    setValue("skills", skillsArray);
   };
 
   const showModal = (type, message) => {
@@ -32,30 +42,30 @@ function JobPost() {
 
   const closeModal = () => {
     setModal({ show: false, type: "", message: "" });
-    if (modal.type === "success") {
-      navigate("/jobs"); // Redirect only on success
-    }
+    if (modal.type === "success") navigate("/internships");
   };
 
   const onSubmit = async (data) => {
     try {
-      const response = await fetch(`${import.meta.env.VITE_BASE_URL}/jobs`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
+      const response = await fetch(
+        `${import.meta.env.VITE_BASE_URL}/api/internships`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+          body: JSON.stringify(data),
         },
-        credentials: "include", // for setting cookies
-        body: JSON.stringify(data),
-      });
+      );
 
       const result = await response.json();
+
       if (response.ok) {
-        showModal("success", "Job posted successfully!");
+        showModal("success", "Internship posted successfully!");
       } else {
-        showModal("error", `Failed to post job: ${result.message}`);
+        showModal("error", result.message);
       }
     } catch (err) {
-      showModal("error", `Error: ${err.message}`);
+      showModal("error", err.message);
     }
   };
 
@@ -63,9 +73,12 @@ function JobPost() {
     <div className="relative flex items-center justify-center min-h-screen bg-[#0a66c2]">
       <div className="w-full max-w-4xl bg-white rounded-lg shadow-lg">
         <div className="p-8">
-          <h2 className="text-2xl font-bold text-center mb-6">Post a Job</h2>
+          <h2 className="text-2xl font-bold text-center mb-6">
+            Post an Internship
+          </h2>
 
           <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
+            {/* Company */}
             <div className="mb-4">
               <label
                 htmlFor="company"
@@ -73,6 +86,7 @@ function JobPost() {
               >
                 Company Name
               </label>
+
               <input
                 id="company"
                 className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-600"
@@ -81,6 +95,7 @@ function JobPost() {
                   required: "Company name is required.",
                 })}
               />
+
               {errors.company && (
                 <p className="text-red-500 text-sm">{errors.company.message}</p>
               )}
@@ -88,26 +103,29 @@ function JobPost() {
 
             <div className="mb-4">
               <label
-                htmlFor="jobTitle"
+                htmlFor="internshipTitle"
                 className="block font-bold text-gray-700 mb-1"
               >
-                Job Title
+                Internship Title
               </label>
+
               <input
-                id="jobTitle"
+                id="internshipTitle"
                 className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-600"
-                placeholder="Enter Job Title"
-                {...register("jobTitle", {
-                  required: "Job title is required.",
+                placeholder="Enter Internship Title"
+                {...register("title", {
+                  required: "Internship title is required.",
                 })}
               />
-              {errors.jobTitle && (
+
+              {errors.internshipTitle && (
                 <p className="text-red-500 text-sm">
-                  {errors.jobTitle.message}
+                  {errors.internshipTitle.message}
                 </p>
               )}
             </div>
 
+            {/* Skills */}
             <div className="mb-4">
               <label
                 htmlFor="customSkills"
@@ -115,22 +133,28 @@ function JobPost() {
               >
                 Enter Required Skills (comma separated)
               </label>
+
               <input
                 id="customSkills"
                 className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-600 mt-2"
-                placeholder="e.g. Python, Django, REST API"
+                placeholder="e.g. React, Node.js, SQL"
                 value={customSkills}
                 onChange={onCustomSkillChange}
               />
+
               <input
                 type="hidden"
-                {...register("skills", { required: "Skills are required." })}
+                {...register("skills", {
+                  required: "Skills are required.",
+                })}
               />
+
               {errors.skills && (
                 <p className="text-red-500 text-sm">{errors.skills.message}</p>
               )}
             </div>
 
+            {/* Location */}
             <div className="mb-4">
               <label
                 htmlFor="location"
@@ -138,12 +162,14 @@ function JobPost() {
               >
                 Location
               </label>
+
               <input
                 id="location"
                 className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-600"
-                placeholder="Enter Location"
+                placeholder="Enter Internship Location"
                 {...register("location", { required: "Location is required." })}
               />
+
               {errors.location && (
                 <p className="text-red-500 text-sm">
                   {errors.location.message}
@@ -151,102 +177,101 @@ function JobPost() {
               )}
             </div>
 
+            {/* Stipend */}
             <div className="mb-4">
               <label
-                htmlFor="salary"
+                htmlFor="stipend"
                 className="block font-bold text-gray-700 mb-1"
               >
-                Salary
+                Stipend value
               </label>
+
               <input
-                id="salary"
+                id="stipend"
+                type="number"
                 className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-600"
-                placeholder="Enter Salary"
-                {...register("salary", { required: "Salary is required." })}
+                placeholder="Enter Monthly Stipend"
+                {...register("stipendValue", {
+                  required: "Stipend is required.",
+                })}
               />
-              {errors.salary && (
-                <p className="text-red-500 text-sm">{errors.salary.message}</p>
+
+              {errors.stipend && (
+                <p className="text-red-500 text-sm">{errors.stipend.message}</p>
               )}
             </div>
 
+            {/* Duration */}
             <div className="mb-4">
               <label
-                htmlFor="experience"
+                htmlFor="duration"
                 className="block font-bold text-gray-700 mb-1"
               >
-                Experience
+                Internship Duration
               </label>
+
               <input
-                id="experience"
+                id="duration"
                 className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-600"
-                placeholder="Enter Experience (e.g. 2-4 years)"
-                {...register("experience", {
-                  required: "Experience is required.",
+                placeholder="Enter Duration (e.g. 3 months, 6 months)"
+                {...register("duration", {
+                  required: "Internship duration is required.",
                 })}
               />
-              {errors.experience && (
+
+              {errors.duration && (
                 <p className="text-red-500 text-sm">
-                  {errors.experience.message}
+                  {errors.duration.message}
                 </p>
               )}
             </div>
 
+            {/* Checkboxes */}
             <div className="mb-4">
-              <label
-                htmlFor="jobType"
-                className="block font-bold text-gray-700 mb-1"
-              >
-                Job Type
+              <label className="block font-bold text-gray-700 mb-2">
+                Internship Mode
               </label>
-              <input
-                id="jobType"
-                className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-600"
-                placeholder="e.g. Full-Time, Part-Time, Remote"
-                {...register("jobType", { required: "Job type is required." })}
-              />
-              {errors.jobType && (
-                <p className="text-red-500 text-sm">{errors.jobType.message}</p>
-              )}
+
+              <div className="flex gap-6 border p-3 rounded focus-within:ring-2 focus-within:ring-blue-600">
+                <label className="flex items-center gap-2 text-gray-700">
+                  <input
+                    type="checkbox"
+                    className="w-4 h-4 accent-blue-600"
+                    {...register("isRemote")}
+                  />
+                  Remote Internship
+                </label>
+
+                <label className="flex items-center gap-2 text-gray-700">
+                  <input
+                    type="checkbox"
+                    className="w-4 h-4 accent-blue-600"
+                    {...register("isPartTime")}
+                  />
+                  Part-Time
+                </label>
+              </div>
             </div>
 
-            <div className="mb-4">
-              <label
-                htmlFor="postedOn"
-                className="block font-bold text-gray-700 mb-1"
-              >
-                Posted On
-              </label>
-              <input
-                id="postedOn"
-                className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-600"
-                type="date"
-                {...register("postedOn", {
-                  required: "Posting date is required.",
-                })}
-              />
-              {errors.postedOn && (
-                <p className="text-red-500 text-sm">
-                  {errors.postedOn.message}
-                </p>
-              )}
-            </div>
-
+            {/* Description */}
             <div className="mb-4">
               <label
                 htmlFor="description"
                 className="block font-bold text-gray-700 mb-1"
               >
-                Job Description
+                Internship Description
               </label>
+
               <textarea
                 id="description"
                 className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-600"
                 rows={5}
-                placeholder="Enter detailed job description"
+                placeholder="Enter detailed internship description"
                 {...register("description", {
-                  required: "Job description is required.",
+                  required: "Internship description is required.",
                 })}
               ></textarea>
+
               {errors.description && (
                 <p className="text-red-500 text-sm">
                   {errors.description.message}
@@ -258,7 +283,7 @@ function JobPost() {
               type="submit"
               className="w-full bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
             >
-              Post Job
+              Post Internship
             </button>
           </form>
         </div>
@@ -311,5 +336,4 @@ function JobPost() {
     </div>
   );
 }
-
-export default JobPost;
+export default InternshipPost;

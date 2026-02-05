@@ -1,61 +1,80 @@
+import mongoose from "mongoose";
+
 const courses = [
   {
-    id: 0,
+    createdBy: new mongoose.Types.ObjectId("6883aa5a4cf01e582cc60903"),
+
     title: "Web Development",
     company: "Internswallah Trainings",
-    description: "Master HTML, CSS, JavaScript, and React to build modern, responsive websites from scratch.",
+    description:
+      "Master HTML, CSS, JavaScript, and React to build modern, responsive websites from scratch.",
     location: "Online",
     duration: "6 Weeks",
     fees: 3499,
-    posted: "2 days",
     type: "Beginner Friendly",
+
+    createdAt: new Date("2025-12-12"),
   },
   {
-    id: 1,
+    createdBy: new mongoose.Types.ObjectId("6883aa5a4cf01e582cc60903"),
+
     title: "Data Science",
     company: "Internswallah Trainings",
-    description: "Learn Python, machine learning, and data visualization to extract insights from complex datasets.",
+    description:
+      "Learn Python, machine learning, and data visualization to extract insights from complex datasets.",
     location: "Online",
     duration: "8 Weeks",
     fees: 4499,
-    posted: "5 days",
     type: "Certificate Course",
+
+    createdAt: new Date("2025-11-28"),
   },
   {
-    id: 2,
+    createdBy: new mongoose.Types.ObjectId("6883aa5a4cf01e582cc60903"),
+
     title: "Python Programming",
     company: "Internswallah Trainings",
-    description: "Build a strong foundation in Python programming with hands-on projects and real-world applications.",
+    description:
+      "Build a strong foundation in Python programming with hands-on projects and real-world applications.",
     location: "Online",
     duration: "6 Weeks",
     fees: 2999,
-    posted: "1 week",
     type: "Project Based",
+
+    createdAt: new Date("2025-08-15"),
   },
   {
-    id: 3,
+    createdBy: new mongoose.Types.ObjectId("6883aa5a4cf01e582cc60903"),
+
     title: "Digital Marketing",
     company: "Internswallah Trainings",
-    description: "Master SEO, social media marketing, and Google Ads to grow businesses in the digital age.",
+    description:
+      "Master SEO, social media marketing, and Google Ads to grow businesses in the digital age.",
     location: "Online",
     duration: "6 Weeks",
     fees: 3499,
-    posted: "3 days",
     type: "Beginner Friendly",
+
+    createdAt: new Date("2025-12-20"),
   },
   {
-    id: 4,
+    createdBy: new mongoose.Types.ObjectId("6883aa5a4cf01e582cc60903"),
+
     title: "Android App Development",
     company: "Internswallah Trainings",
-    description: "Create native Android applications using Java and Kotlin with industry-standard practices.",
+    description:
+      "Create native Android applications using Java and Kotlin with industry-standard practices.",
     location: "Online",
     duration: "8 Weeks",
     fees: 4499,
-    posted: "4 days",
     type: "Certificate Course",
+
+    createdAt: new Date("2025-12-18"),
   },
+
   {
-    id: 5,
+    createdBy: new mongoose.Types.ObjectId("6980e1113564323d74cc7ca7"),
+
     title: "UI/UX Design",
     company: "Internswallah Trainings",
     description:
@@ -63,31 +82,38 @@ const courses = [
     location: "Online",
     duration: "6 Weeks",
     fees: 3799,
-    posted: "2 weeks",
     type: "Project Based",
+
+    createdAt: new Date("2024-11-10"),
   },
   {
-    id: 6,
+    createdBy: new mongoose.Types.ObjectId("6980e1113564323d74cc7ca7"),
+
     title: "Ethical Hacking",
     company: "Internswallah Trainings",
-    description: "Learn cybersecurity fundamentals and penetration testing to protect systems from security threats.",
+    description:
+      "Learn cybersecurity fundamentals and penetration testing to protect systems from security threats.",
     location: "Online",
     duration: "8 Weeks",
     fees: 4999,
-    posted: "1 day",
     type: "Certificate Course",
+
+    createdAt: new Date("2025-12-25"),
   },
   {
-    id: 7,
+    createdBy: new mongoose.Types.ObjectId("6980e1113564323d74cc7ca7"),
+
     title: "AutoCAD for Engineers",
     company: "Internswallah Trainings",
-    description: "Master 2D and 3D technical drawing and design using AutoCAD for engineering applications.",
+    description:
+      "Master 2D and 3D technical drawing and design using AutoCAD for engineering applications.",
     location: "Online",
     duration: "6 Weeks",
     fees: 3299,
-    posted: "6 days",
     type: "Industry Oriented",
-  },
-]
 
-export default courses
+    createdAt: new Date("2024-09-05"),
+  },
+];
+
+export default courses;
